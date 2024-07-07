@@ -1,13 +1,14 @@
 
 // -------------------------------------------------------------------------- //
 
-import { ScrollView, StyleSheet, View } from 'react-native';
 import { useTheme } from '../../../ui/ThemeProvider';
+
+import { ScrollView, StyleSheet, View } from 'react-native';
 import RNBounceable from '@freakycoder/react-native-bounceable';
 
 // -------------------------------------------------------------------------- //
 
-const ShoppingScreen = () => {
+const PaymentScreen = () => {
     const { themePallete } = useTheme();
 
     return (
@@ -50,6 +51,6 @@ const styles = StyleSheet.create({
 
 // -------------------------------------------------------------------------- //
 
-export default ShoppingScreen;
+export default PaymentScreen;
 
 // -------------------------------------------------------------------------- //

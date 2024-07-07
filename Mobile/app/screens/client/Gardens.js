@@ -11,8 +11,9 @@ import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { AntDesign } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Carousel } from 'react-native-basic-carousel';
+import { MaterialIcons  as Icon } from '@expo/vector-icons';
 import RNBounceable from '@freakycoder/react-native-bounceable';
-import { StyleSheet, Dimensions, View, ImageBackground, Text } from 'react-native';
+import { StyleSheet, Dimensions, View, ImageBackground, Text, TouchableOpacity, Switch } from 'react-native';
 
 // -------------------------------------------------------------------------- //
 
@@ -22,6 +23,8 @@ const GardensScreen = () => {
 
     const bottomSheetRef = useRef(null);
     const [ selectedGarden, setSelectedGarden ] = useState(null);
+
+    const [ isActive, setIsActive ] = useState(false);
 
     // ---------------------------------------------------------------------- //
 
@@ -150,29 +153,40 @@ const GardensScreen = () => {
                                 <AntDesign name="edit" size={SIZES.small} color={themePallete.text} />
                             </RNBounceable>
 
+                            {/* Activar/Desactivar paquete de sensores */}
+                            <View style={styles.optionContainer}>
+                                <Icon name={isActive ? 'sensors' : 'sensors-off' }
+                                    size={SIZES.xLarge} color={ COLORS.accent } style={styles.iconOption} />
 
+                                <Text style={[ styles.textOption, { color: themePallete.text } ]}>Paquete de sensores</Text>
 
+                                <Switch value={isActive} onValueChange={() => { setIsActive(!isActive) }} style={styles.switchOption}
+                                    trackColor={{ false: COLORS.disabled, true: COLORS.alterDisabled }}
+                                    thumbColor={COLORS.accent}
+                                />
+                            </View>
 
+                            {/* Mostrar gráficas de lecturas de sensores */}
+                            <RNBounceable style={{ width: '100%' }} onPress={() => {}}>
+                                <View style={styles.optionContainer}>
+                                    <Icon name='auto-graph' size={SIZES.xLarge} color={ COLORS.accent } style={styles.iconOption} />
+                                    <Text style={[ styles.textOption, { color: themePallete.text } ]}>Mostrar gráficas</Text>
+                                </View>
+                            </RNBounceable>
 
+                            {/* Perfil del jardín, cambia comportamiento de los sensores */}
+                            <View style={styles.optionContainer}>
+                                <Icon name='style' size={SIZES.xLarge} color={ COLORS.accent } style={styles.iconOption} />
+                                <Text style={[ styles.textOption, { color: themePallete.text } ]}>Perfil actual</Text>
+                            </View>
 
-
-
-
-
-
-
-                            <Text style={[ styles.modalLocation, { color: themePallete.text } ]}>
-                                {`Latitud: ${selectedGarden.location.latitude}, Longitud: ${selectedGarden.location.longitude}`}
-                            </Text>
-                            <Text style={[ styles.modalSensor, { color: themePallete.text } ]}>
-                                {`Humedad: ${selectedGarden.sensorRead.moisture} %`}
-                            </Text>
-                            <Text style={[ styles.modalSensor, { color: themePallete.text } ]}>
-                                {`Intensidad de luz: ${selectedGarden.sensorRead.sunlight} %`}
-                            </Text>
-                            <Text style={[ styles.modalSensor, { color: themePallete.text } ]}>
-                                {`Temperatura: ${selectedGarden.sensorRead.temperature} °C`}
-                            </Text>
+                            {/* Eliminar jardín */}
+                            <RNBounceable style={{ width: '100%' }} onPress={() => {}}>
+                                <View style={[ styles.optionContainer, { borderBottomWidth: 0 } ]}>
+                                    <Icon name='delete-forever' size={SIZES.xLarge} color={ COLORS.accent } style={styles.iconOption} />
+                                    <Text style={[ styles.textOption, { color: themePallete.text } ]}>Eliminar</Text>
+                                </View>
+                            </RNBounceable>
                         </>
                     )}
                 </BottomSheetView>
@@ -252,30 +266,36 @@ const styles = StyleSheet.create({
         fontSize: SIZES.medium,
     },
 
-
-
-
-
-
-
-
-
-    modalTitle: {
-        fontSize: SIZES.xxLarge,
+    modalDescription: {
+        fontSize: SIZES.medium,
         fontWeight: 'bold',
         marginBottom: 10,
     },
-    modalDescription: {
-        fontSize: SIZES.medium,
-        marginBottom: 10,
+
+    optionContainer: {
+        alignSelf: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        width: '82%', height: 72,
+
+        marginVertical: 4,
+        paddingHorizontal: 22,
+        borderBottomWidth: .6,
+        borderColor: COLORS.alterDisabled,
     },
-    modalLocation: {
-        fontSize: SIZES.small,
-        marginBottom: 10,
+
+    iconOption: {
+        paddingRight: 12,
     },
-    modalSensor: {
+
+    textOption: {
+        fontWeight: '500',
         fontSize: SIZES.medium,
-        marginBottom: 5,
+    },
+
+    switchOption: {
+        marginRight: 24,
+        position: 'absolute', right: 0,
     },
 
 });

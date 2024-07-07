@@ -1,28 +1,34 @@
 
 // -------------------------------------------------------------------------- //
 
-import { StyleSheet, View } from 'react-native';
+import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
+
+import { StyleSheet, View, Text } from 'react-native';
 
 // -------------------------------------------------------------------------- //
 
 const HomeScreen = () => {
     const { themePallete } = useTheme();
 
-    return (
-        <View style={[ styles.mainContainer, { backgroundColor: themePallete.background } ]}>
+    // ---------------------------------------------------------------------- //
 
+    return (
+        <View style={[styles.mainContainer, { backgroundColor: themePallete.background }]}>
         </View>
     );
 
 };
+
+
+
 
 // -------------------------------------------------------------------------- //
 
 const styles = StyleSheet.create({
 
     mainContainer: {
-        flex: 1, justifyContent: 'center', alignItems: 'center'
+        flex: 1, alignItems: 'center', justifyContent: 'center',
     },
 
 });

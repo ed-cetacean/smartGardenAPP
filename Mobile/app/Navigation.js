@@ -5,6 +5,7 @@ import { COLORS } from '../ui/Styles';
 import { useTheme } from '../ui/ThemeProvider';
 import ProfileButton from '../app/ProfileButton';
 import SettingsButton from '../app/SettingsButton';
+import EditProfileButton from '../app/EditProfileButton';
 
 import { Entypo as Icon } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -20,6 +21,8 @@ import SignupScreen from './screens/start/Signup';
 import ForgotScreen from './screens/start/Password';
 import ProfileScreen from './screens/feed/Profile';
 import SettingsScreen from './screens/feed/Settings';
+import PaymentScreen from './screens/client/Payments';
+import EditProfileScreen from './screens/feed/EditProfile';
 
 // Bottom:
 import HomeScreen from './screens/feed/Home';
@@ -75,9 +78,9 @@ export function StackNav() {
     // ---------------------------------------------------------------------- //
 
     return (
-        <Stack.Navigator initialRouteName='Start' detachInactiveScreens={true} screenOptions={{
-            title: false, animationEnabled: false, headerStyle: { backgroundColor: themePallete.background },
-            headerShadowVisible: false, headerTintColor: COLORS.accent, headerLeftContainerStyle: { paddingLeft: 12 } }}>
+        <Stack.Navigator initialRouteName='Start' detachInactiveScreens={true} screenOptions={{ title: false, animationEnabled: false,
+            headerStyle: { backgroundColor: themePallete.background }, headerShadowVisible: false, headerTintColor: COLORS.accent,
+            headerLeftContainerStyle: { paddingLeft: 12 }, headerRightContainerStyle: { paddingRight: 28 } }}>
 
             {/* Inicio: */}
             <Stack.Screen name='Start' component={StartScreen} options={{ headerShown: false }} />
@@ -86,8 +89,14 @@ export function StackNav() {
             <Stack.Screen name='Forgot' component={ForgotScreen} />
 
             {/* Dentro de la APP: */}
-            <Stack.Screen name='Profile' component={ProfileScreen} />
+            <Stack.Screen name='Profile' component={ProfileScreen}
+                options={{ headerRight: () => (
+                    <EditProfileButton /> ),
+                }}
+            />
+            <Stack.Screen name='EditProfile' component={EditProfileScreen} />
             <Stack.Screen name='Settings' component={SettingsScreen} />
+            <Stack.Screen name='Payment' component={PaymentScreen} />
 
             {/* Acceso directo al BottomNav: */}
             <Stack.Screen name='BottomNav' component={BottomNav} options={{ headerShown: false }} />
