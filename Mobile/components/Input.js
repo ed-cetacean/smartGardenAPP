@@ -5,7 +5,7 @@ import { COLORS, SIZES } from '../ui/Styles';
 import { useTheme } from '../ui/ThemeProvider';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { View, TextInput, Animated, StyleSheet } from 'react-native';
+import { View, TextInput, Animated, StyleSheet, Platform } from 'react-native';
 
 // ---------------------------- COMPONENT: INPUT ---------------------------- //
 
@@ -37,11 +37,15 @@ const InputCW = ({ leftIcon, rightIcon, placeholder, ...props }) => {
 
         // Cambia la posición del 'placeholder', dependiendo de 'isFocused'.
         top: animFocused.interpolate({
-            inputRange: [ 0, 1 ], outputRange: [22, -8] }),
+            inputRange: [ 0, 1 ],
+            outputRange: Platform.OS === 'web' ? [0, -22] : [22, -8],
+        }),
 
         // Cambia el tamaño del 'placeholder', dependiendo de 'isFocused'.
         fontSize: animFocused.interpolate({
-            inputRange: [ 0, 1 ], outputRange: [ SIZES.medium, SIZES.small ] }),
+            inputRange: [ 0, 1 ],
+            outputRange: [ SIZES.medium, SIZES.small ]
+        }),
 
         // Cambia el color del 'placeholder', dependiendo de 'isFocused'.
         color: animFocused.interpolate({
@@ -97,6 +101,7 @@ const styles = StyleSheet.create({
     textInput: {
         flex: 1,
         height: '100%',
+        outlineStyle: 'none',
         paddingHorizontal: 4,
         fontSize: SIZES.medium,
     },

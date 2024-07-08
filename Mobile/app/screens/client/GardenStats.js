@@ -5,6 +5,7 @@ import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 
 import { useRoute } from '@react-navigation/native';
+import { Swing } from 'react-native-animated-spinkit';
 import { LineChart } from 'react-native-gifted-charts';
 import { StyleSheet, ScrollView, View, Text, Dimensions } from 'react-native';
 
@@ -98,14 +99,14 @@ const GardenStatsScreen = () => {
 
     // ---------------------------------------------------------------------- //
 
-    const gardenData = sensorRead.find(garden => garden.gardenId === 4);
+    const gardenData = sensorRead.find(garden => garden.gardenId === gardenId);
 
     // Indicador de carga si no se obtienen datos del jardín seleccionado.
     if (!gardenData) {
 
         return (
             <View style={[styles.mainContainer, { backgroundColor: themePallete.background, justifyContent: 'center' }]}>
-                <Text style={[ styles.nullData, { color: themePallete.text } ]}>SIN DATOS DISPONIBLES</Text>
+                <Swing size={SIZES.xxLarge * 1.8} color={COLORS.accent} />
             </View>
         );
 
@@ -329,13 +330,6 @@ const styles = StyleSheet.create({
 
     mainContainer: {
         flex: 1, alignItems: 'center',
-    },
-
-    // ---------------------------------------------------------------------- //
-
-    nullData: {
-        fontWeight: 'bold',
-        fontSize: SIZES.large,
     },
 
     // ---------------------------------------------------------------------- //
