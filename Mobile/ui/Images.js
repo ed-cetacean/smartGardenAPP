@@ -6,6 +6,7 @@ export const SourceIMG = {
 
     startBG: require('../assets/images/start.jpg'),
     mainGarden: require('../assets/images/mainGarden.jpg'),
+    sensorPack: require('../assets/images/sensorPack.png'),
 };
 
 // -------------------------------------------------------------------------- //
