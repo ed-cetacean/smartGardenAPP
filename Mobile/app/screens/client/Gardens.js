@@ -8,17 +8,20 @@ import { useTheme } from '../../../ui/ThemeProvider';
 import React, { useState, useRef } from 'react';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
+
+import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Carousel } from 'react-native-basic-carousel';
 import { MaterialIcons  as Icon } from '@expo/vector-icons';
 import RNBounceable from '@freakycoder/react-native-bounceable';
-import { StyleSheet, Dimensions, View, ImageBackground, Text, TouchableOpacity, Switch } from 'react-native';
+import { StyleSheet, Dimensions, View, ImageBackground, Text, Switch } from 'react-native';
 
 // -------------------------------------------------------------------------- //
 
 const GardensScreen = () => {
     const { themePallete } = useTheme();
+    const navigation = useNavigation();
     const { width } = Dimensions.get('window');
 
     const bottomSheetRef = useRef(null);
@@ -43,6 +46,7 @@ const GardensScreen = () => {
                 latitude: '-10930123.123',
                 longitude: '1298.123',
             },
+            profile: 'Nocturna',
         },
         {
             id: 2,
@@ -58,6 +62,7 @@ const GardensScreen = () => {
                 latitude: '-10930123.123',
                 longitude: '1298.123',
             },
+            profile: 'Sencillo',
         },
         {
             id: 3,
@@ -73,26 +78,21 @@ const GardensScreen = () => {
                 latitude: '-10930123.123',
                 longitude: '1298.123',
             },
+            profile: 'Sombra'
         },
     ];
-
-    const SensorPacks = [
-        {
-            id: 1,
-            sensorPack: '91280931',
-            sensors: {
-                moisture: '1239019',
-                light: '120241',
-                temperature: '0912869',
-            }
-        }
-    ]
 
     // ---------------------------------------------------------------------- //
 
     const showGarden = (garden) => {
         setSelectedGarden(garden);
         bottomSheetRef.current?.expand();
+    };
+
+    const showCharts = (garden) => {
+        navigation.navigate('GardenStats', {
+            gardenId: garden,
+        });
     };
 
     // ---------------------------------------------------------------------- //
@@ -139,6 +139,14 @@ const GardensScreen = () => {
                     </RNBounceable>
             } />
 
+            {/* Crear nuevo jardín */}
+            <RNBounceable onPress={() => {}}>
+                <View style={styles.buttonGarden}>
+                    <Icon name='add' size={SIZES.xxLarge} color={COLORS.accent} />
+                    <Text style={styles.textGarden}>REGISTRAR</Text>
+                </View>
+            </RNBounceable>
+
             {/* Modal */}
             <BottomSheet ref={bottomSheetRef} snapPoints={[ 1, '80%' ]} enablePanDownToClose
                 backgroundStyle={{ backgroundColor: themePallete.background }}
@@ -167,7 +175,7 @@ const GardensScreen = () => {
                             </View>
 
                             {/* Mostrar gráficas de lecturas de sensores */}
-                            <RNBounceable style={{ width: '100%' }} onPress={() => {}}>
+                            <RNBounceable style={{ width: '100%' }} onPress={() => { showCharts(selectedGarden.id) }}>
                                 <View style={styles.optionContainer}>
                                     <Icon name='auto-graph' size={SIZES.xLarge} color={ COLORS.accent } style={styles.iconOption} />
                                     <Text style={[ styles.textOption, { color: themePallete.text } ]}>Mostrar gráficas</Text>
@@ -178,6 +186,8 @@ const GardensScreen = () => {
                             <View style={styles.optionContainer}>
                                 <Icon name='style' size={SIZES.xLarge} color={ COLORS.accent } style={styles.iconOption} />
                                 <Text style={[ styles.textOption, { color: themePallete.text } ]}>Perfil actual</Text>
+
+                                <Text style={[ styles.textOption, styles.switchOption, { color: themePallete.alterText } ]}>{selectedGarden.profile}</Text>
                             </View>
 
                             {/* Eliminar jardín */}
@@ -204,7 +214,7 @@ const styles = StyleSheet.create({
     mainContainer: { flex: 1, },
 
     carouselButton: {
-        width: '80%', height: '80%',
+        width: '80%', height: '90%',
         alignSelf: 'center', marginTop: 40,
     },
 
@@ -246,6 +256,20 @@ const styles = StyleSheet.create({
     sensorRead: {
         fontSize: SIZES.small,
         color: COLORS.light,
+    },
+
+    buttonGarden: {
+        width: 'auto', height: 60,
+        borderColor: COLORS.accent,
+        borderWidth: 2, borderRadius: 60,
+        marginVertical: 22, paddingHorizontal: 22,
+        alignSelf: 'center', justifyContent: 'center',
+        flexDirection: 'row', alignItems: 'center'
+    },
+
+    textGarden: {
+        paddingLeft: 8, color: COLORS.accent,
+        fontWeight: 'bold', fontSize: SIZES.medium,
     },
 
     // ---------------------------------------------------------------------- //

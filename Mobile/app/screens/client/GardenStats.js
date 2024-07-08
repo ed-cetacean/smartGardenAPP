@@ -4,13 +4,17 @@
 import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 
+import { useRoute } from '@react-navigation/native';
 import { LineChart } from 'react-native-gifted-charts';
-import { StyleSheet, View, Text, Dimensions } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, Dimensions } from 'react-native';
 
 // -------------------------------------------------------------------------- //
 
-const GardenStats = () => {
+const GardenStatsScreen = () => {
+    const route = useRoute();
+    const { gardenId } = route.params;
     const { themePallete } = useTheme();
+
     const chartWidth =  Dimensions.get('window').width * 0.68;
 
     // ---------------------------------------------------------------------- //
@@ -18,6 +22,7 @@ const GardenStats = () => {
     const sensorRead = [
         {
             gardenId: 1,
+            gardenName: 'Disenchanted',
             sensors: {
                 moisture: [
                     { timestamp: "2024-06-30T00:00:00Z", value: 30 },
@@ -47,6 +52,7 @@ const GardenStats = () => {
         },
         {
             gardenId: 2,
+            gardenName: 'Togetherness',
             sensors: {
                 moisture: [
                     { timestamp: "2024-06-30T00:00:00Z", value: 40 },
@@ -68,6 +74,7 @@ const GardenStats = () => {
         },
         {
             gardenId: 3,
+            gardenName: 'Departure',
             sensors: {
                 light: [
                     { timestamp: "2024-06-30T00:00:00Z", value: 300 },
@@ -89,6 +96,24 @@ const GardenStats = () => {
         }
     ];
 
+    // ---------------------------------------------------------------------- //
+
+    const gardenData = sensorRead.find(garden => garden.gardenId === 4);
+
+    // Indicador de carga si no se obtienen datos del jardín seleccionado.
+    if (!gardenData) {
+
+        return (
+            <View style={[styles.mainContainer, { backgroundColor: themePallete.background, justifyContent: 'center' }]}>
+                <Text style={[ styles.nullData, { color: themePallete.text } ]}>SIN DATOS DISPONIBLES</Text>
+            </View>
+        );
+
+    };
+
+    const { moisture, light, temperature } = gardenData.sensors;
+
+    // Da un formato presentable a la hora de cada registro.
     const formatData = (sensorData) => {
         return sensorData.map(entry => ({
             value: entry.value,
@@ -96,7 +121,11 @@ const GardenStats = () => {
         }));
     };
 
-    // ---------------------------------------------------------------------- //
+    const formattedMoisture = moisture ? formatData(moisture) : [];
+    const formattedLight = light ? formatData(light) : [];
+    const formattedTemperature = temperature ? formatData(temperature) : [];
+
+    // -- CONFIGURACIÓN DE LAS GRÁFICAS ------------------------------------- //
 
     const chartProps = {
         width: chartWidth, height: 220, // Tamaño de la gráfica.
@@ -251,23 +280,44 @@ const GardenStats = () => {
     return (
         <View style={[styles.mainContainer, { backgroundColor: themePallete.background }]}>
 
-            <Text style={[ styles.charTitle, { color: themePallete.text } ]}>Humedad</Text>
-            <View style={styles.charContainer}>
-                <LineChart {...chartProps} {...chartMoisture}
-                    data={formatData(sensorRead[0].sensors.moisture)} />
-            </View>
+            {/* Nombre del jardín */}
+            <Text style={styles.gardenName}>{(gardenData.gardenName).toUpperCase()}</Text>
 
-            <Text style={[ styles.charTitle, { color: themePallete.text } ]}>Luminosidad</Text>
-            <View style={styles.charContainer}>
-                <LineChart {...chartProps} {...chartLight}
-                    data={formatData(sensorRead[0].sensors.light)} />
-            </View>
+            <ScrollView style={styles.scrollContainer}>
+                {/* Humedad de suelo */}
+                {moisture && (
+                    <>
+                        <Text style={[ styles.chartName, { color: themePallete.text } ]}>Humedad</Text>
 
-            <Text style={[ styles.charTitle, { color: themePallete.text } ]}>Temperatura</Text>
-            <View style={styles.charContainer}>
-                <LineChart {...chartProps} {...chartTemperature}
-                    data={formatData(sensorRead[0].sensors.temperature)} />
-            </View>
+                        <View style={styles.charContainer}>
+                            <LineChart {...chartProps} {...chartMoisture} data={formattedMoisture} />
+                        </View>
+                    </>
+                )}
+
+                {/* Intensidad de luz solar */}
+                {light && (
+                    <>
+                        <Text style={[ styles.chartName, { color: themePallete.text } ]}>Luminosidad</Text>
+
+                        <View style={styles.charContainer}>
+                            <LineChart {...chartProps} {...chartLight} data={formattedLight} />
+                        </View>
+                    </>
+                )}
+
+                {/* Temperatura ambiente */}
+                {temperature && (
+                    <>
+                        <Text style={[ styles.chartName, { color: themePallete.text } ]}>Temperatura</Text>
+
+                        <View style={styles.charContainer}>
+                            <LineChart {...chartProps} {...chartTemperature} data={formattedTemperature} />
+                        </View>
+                    </>
+                )}
+            </ScrollView>
+
         </View>
     );
 
@@ -278,38 +328,47 @@ const GardenStats = () => {
 const styles = StyleSheet.create({
 
     mainContainer: {
-        flex: 1, alignItems: 'center', justifyContent: 'center',
+        flex: 1, alignItems: 'center',
     },
 
-    charTitle: {
+    // ---------------------------------------------------------------------- //
+
+    nullData: {
         fontWeight: 'bold',
+        fontSize: SIZES.large,
+    },
+
+    // ---------------------------------------------------------------------- //
+
+    gardenName: {
+        letterSpacing: 10,
+        fontWeight: 'bold',
+        paddingVertical: 22,
+        color: COLORS.accent,
+        fontSize: SIZES.xLarge,
+    },
+
+    // ---------------------------------------------------------------------- //
+
+    scrollContainer: {
+        width: '100%', marginBottom: 40,
+    },
+
+    chartName: {
+        alignSelf: 'center',
+        paddingVertical: 50,
         fontSize: SIZES.medium,
-        marginBottom: 12,
     },
 
     charContainer: {
         width: '80%',
-    },
-
-    chartLabel: {
-        fontSize: SIZES.small,
-    },
-
-    pointerContainer: {
-        borderRadius: 4,
-        height: 24, width: 24,
-        alignItems: 'center', justifyContent: 'center',
-    },
-
-    pointerText: {
-        fontWeight: 'bold',
-        fontSize: SIZES.small,
+        alignSelf: 'center',
     },
 
 });
 
 // -------------------------------------------------------------------------- //
 
-export default GardenStats;
+export default GardenStatsScreen;
 
 // -------------------------------------------------------------------------- //

@@ -23,6 +23,7 @@ import ProfileScreen from './screens/feed/Profile';
 import SettingsScreen from './screens/feed/Settings';
 import PaymentScreen from './screens/client/Payments';
 import EditProfileScreen from './screens/feed/EditProfile';
+import GardenStatsScreen from './screens/client/GardenStats';
 
 // Bottom:
 import HomeScreen from './screens/feed/Home';
@@ -94,6 +95,7 @@ export function StackNav() {
                     <EditProfileButton /> ),
                 }}
             />
+            <Stack.Screen name='GardenStats' component={GardenStatsScreen} />
             <Stack.Screen name='EditProfile' component={EditProfileScreen} />
             <Stack.Screen name='Settings' component={SettingsScreen} />
             <Stack.Screen name='Payment' component={PaymentScreen} />
