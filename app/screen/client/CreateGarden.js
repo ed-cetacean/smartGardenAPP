@@ -42,7 +42,7 @@ const CreateGardenScreen = () => {
             setIsLoading(true);
 
             try {
-                const response = await fetch(`${MainSG}Venta/client/${user.id}`, {
+                const response = await fetch(`${MainSG}SensorPack/unassigned/${user.id}`, {
                     method: 'GET', headers: { 'Content-Type': 'application/json' }
                 });
                 if (response.ok) {
@@ -140,8 +140,8 @@ const CreateGardenScreen = () => {
                         label='Seleccione un paquete' value={null} />
 
                     {userSensors.map((sensorPack) => (
-                        <Picker.Item key={sensorPack.sensorPackId} value={sensorPack.sensorPackId}
-                            label={`${sensorPack.sensorPackId}: ${sensorPack.sensorPackType}`}
+                        <Picker.Item key={sensorPack.id} value={sensorPack.id}
+                            label={`${sensorPack.id}: ${sensorPack.sensorPackTypeName}`}
                         />
                     ))}
                 </Picker>
