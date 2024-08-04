@@ -7,7 +7,6 @@ import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 import { useUser } from '../../../core/auth/UserProvider';
 
-
 import React, { useState, useEffect } from 'react';
 import { Flow } from 'react-native-animated-spinkit';
 import { StyleSheet, View, Text } from 'react-native';
@@ -29,6 +28,7 @@ const EditProfileScreen = () => {
 
     let isDisabled = userData.email.trim() === '' || userData.firstName.trim() === '' || userData.lastName.trim() === '' ||
         userData.street.trim() === '' || userData.zip.trim() === '' || userData.city.trim() === '' || userData.state.trim() === '' || userData.country.trim() === '';
+
     const [ isLoading, setIsLoading ] = useState(false);
 
     // ---------------------------------------------------------------------- //
@@ -37,8 +37,7 @@ const EditProfileScreen = () => {
         const fetchUserData = async () => {
             try {
                 const response = await fetch(`${MainSG}Usuario/${user.id}`, {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
+                    method: 'GET', headers: { 'Content-Type': 'application/json' }
                 });
 
                 if (response.ok) {
@@ -69,8 +68,7 @@ const EditProfileScreen = () => {
 
         try {
             const response = await fetch(`${MainSG}Usuario/${user.id}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                method: 'PUT', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData)
             });
 

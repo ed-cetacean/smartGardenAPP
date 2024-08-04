@@ -20,6 +20,10 @@ const ProfileScreen = () => {
     const { themePallete } = useTheme();
     const [ refreshing, setRefreshing ] = useState(false);
 
+    // ---------------------------------------------------------------------- //
+
+
+
     // ---------------------------------------------------------------------- //`
 
     const handleGardens = () => {
