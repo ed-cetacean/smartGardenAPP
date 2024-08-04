@@ -1,27 +1,32 @@
 {
-  "expo": {
-    "name": "smartGardenAPP",
-    "slug": "smartGardenAPP",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "expo": {
+        "name": "MY SMART-GARDEN",
+        "slug": "smartGarden",
+        "version": "1.3.0",
+
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "userInterfaceStyle": "dark",
+
+        "splash": {
+            "image": "./assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#2A313B"
+        },
+
+        "ios": {
+            "supportsTablet": true
+        },
+
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/adaptive-icon.png",
+                "backgroundColor": "#2A313B"
+            }
+        },
+
+        "web": {
+            "favicon": "./assets/favicon.png"
+        }
     }
-  }
 }
