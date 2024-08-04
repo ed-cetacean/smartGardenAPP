@@ -20,6 +20,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // Client:
 import PlantInfoScreen from './screen/client/PlantInfo';
 import GardensScreen from './screen/client/Gardens';
+import EditGardenScreen from './screen/client/EditGarden';
 import GardenStatsScreen from './screen/client/GardenStats';
 import CreateGardenScreen from './screen/client/CreateGarden';
 import ShoppingScreen from './screen/client/Shopping';
@@ -171,6 +172,7 @@ export function StackNav() {
 
             <Stack.Screen name='PlantInfo' component={PlantInfoScreen} />
             <Stack.Screen name='GardenStats' component={GardenStatsScreen} />
+            <Stack.Screen name='EditGarden' component={EditGardenScreen} />
             <Stack.Screen name='CreateGarden' component={CreateGardenScreen} />
             <Stack.Screen name='Payment' component={PaymentScreen} />
             <Stack.Screen name='PaymentInfo' component={PaymentInfoScreen} />

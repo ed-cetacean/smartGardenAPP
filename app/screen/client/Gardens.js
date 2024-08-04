@@ -8,6 +8,7 @@ import { useTheme } from '../../../ui/ThemeProvider';
 import { useUser } from '../../../core/auth/UserProvider';
 
 import { AntDesign } from '@expo/vector-icons';
+import { Swing } from 'react-native-animated-spinkit';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Carousel } from 'react-native-basic-carousel';
 import { useNavigation } from '@react-navigation/native';
@@ -30,6 +31,8 @@ const GardensScreen = () => {
     const [ selectedGarden, setSelectedGarden ] = useState(null);
 
     const [ isActive, setIsActive ] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(false);
+    const [ isDeleting, setIsDeleting ] = useState(false);
 
     // ---------------------------------------------------------------------- //
 
@@ -53,12 +56,19 @@ const GardensScreen = () => {
         };
 
         fetchUserData();
-    }, []);
+    }, [isDeleting]);
 
     // ---------------------------------------------------------------------- //
 
+    const editGarden = (id) => {
+        navigation.navigate('EditGarden', {
+            gardenId: id,
+        });
+    };
+
     const deleteGarden = async (gardenId) => {
         try {
+            setIsDeleting(true);
             const response = await fetch(`${MainSG}Jardin/${gardenId}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' }
@@ -72,6 +82,8 @@ const GardensScreen = () => {
             }
         } catch (error) {
             console.error('ERROR: No se pudo eliminar el jardín.', error);
+        } finally {
+            setIsDeleting(false);
         }
     };
 
@@ -91,6 +103,7 @@ const GardensScreen = () => {
 
     const renderSensors = (sensors) => {
         return sensors.map((sensor, index) => {
+            if (sensor.lastValue === null) return null;
             const unit = sensor.sensorType === 'Temperature' ? '°C' : '%';
             return (
                 <View key={index} style={styles.sensorSection}>
@@ -104,6 +117,16 @@ const GardensScreen = () => {
     const createGarden = () => {
         navigation.navigate('CreateGarden');
     };
+
+    // ---------------------------------------------------------------------- //
+
+    if (isLoading) {
+        return (
+            <View style={[styles.mainContainer, { backgroundColor: themePallete.background, justifyContent: 'center' }]}>
+                <Swing size={SIZES.xxLarge * 1.8} color={COLORS.accent} />
+            </View>
+        );
+    }
 
     // ---------------------------------------------------------------------- //
 
@@ -153,7 +176,7 @@ const GardensScreen = () => {
                 <BottomSheetView style={styles.modalContainer}>
                     {selectedGarden && (
                         <>
-                            <RNBounceable style={styles.modalEdit}>
+                            <RNBounceable style={styles.modalEdit} onPress={() => { editGarden(selectedGarden.id) }}>
                                 <Text style={[ styles.optionEdit, { color: themePallete.text } ]}>{selectedGarden.name}</Text>
                                 <AntDesign name="edit" size={SIZES.small} color={themePallete.text} />
                             </RNBounceable>
