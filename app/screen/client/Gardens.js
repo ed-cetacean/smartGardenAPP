@@ -31,13 +31,13 @@ const GardensScreen = () => {
     const [ selectedGarden, setSelectedGarden ] = useState(null);
 
     const [ isActive, setIsActive ] = useState(false);
-    const [ isLoading, setIsLoading ] = useState(false);
     const [ isDeleting, setIsDeleting ] = useState(false);
 
     // ---------------------------------------------------------------------- //
 
     useEffect(() => {
-        const fetchUserData = async () => {
+        const fetchGardensData = async () => {
+
             try {
                 const response = await fetch(`${MainSG}Jardin/user/${user.id}`, {
                     method: 'GET',
@@ -55,8 +55,8 @@ const GardensScreen = () => {
             }
         };
 
-        fetchUserData();
-    }, [isDeleting]);
+        fetchGardensData();
+    }, [isDeleting, selectedGarden]);
 
     // ---------------------------------------------------------------------- //
 
@@ -84,6 +84,7 @@ const GardensScreen = () => {
             console.error('ERROR: No se pudo eliminar el jardín.', error);
         } finally {
             setIsDeleting(false);
+            bottomSheetRef.current?.close();
         }
     };
 
@@ -117,16 +118,6 @@ const GardensScreen = () => {
     const createGarden = () => {
         navigation.navigate('CreateGarden');
     };
-
-    // ---------------------------------------------------------------------- //
-
-    if (isLoading) {
-        return (
-            <View style={[styles.mainContainer, { backgroundColor: themePallete.background, justifyContent: 'center' }]}>
-                <Swing size={SIZES.xxLarge * 1.8} color={COLORS.accent} />
-            </View>
-        );
-    }
 
     // ---------------------------------------------------------------------- //
 
