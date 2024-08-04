@@ -47,6 +47,16 @@ const PlantInfoScreen = () => {
         );
     }
 
+    let imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg';
+
+    if (data.default_image) {
+        if (data.default_image.original_url) {
+            imageUrl = data.default_image.original_url;
+        } else if (data.default_image.regular_url) {
+            imageUrl = data.default_image.regular_url;
+        }
+    }
+
     // ---------------------------------------------------------------------- //
 
     return (
@@ -63,13 +73,7 @@ const PlantInfoScreen = () => {
             </View>
 
             {/* Imagen */}
-            {data.default_image && data.default_image.regular ? (
-                <Image style={styles.imageStyle} source={{ uri: data.default_image.regular }} />
-            ) : (
-                <View style={[styles.imagePlaceholder, { backgroundColor: COLORS.accent }]}>
-                    <Text style={[styles.imagePlaceholderText, { color: COLORS.light }]}>Imagen no disponible</Text>
-                </View>
-            )}
+            <Image style={styles.imageStyle} source={{ uri: imageUrl }} />
 
             {/* Información */}
             <ScrollView style={styles.plantInfo}>

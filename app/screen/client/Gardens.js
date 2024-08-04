@@ -101,6 +101,10 @@ const GardensScreen = () => {
         });
     };
 
+    const createGarden = () => {
+        navigation.navigate('CreateGarden');
+    };
+
     // ---------------------------------------------------------------------- //
 
     return (
@@ -133,7 +137,7 @@ const GardensScreen = () => {
             } />
 
             {/* Crear nuevo jardín */}
-            <RNBounceable onPress={() => {}}>
+            <RNBounceable onPress={() => { createGarden(); }}>
                 <View style={styles.buttonGarden}>
                     <Icon name='add' size={SIZES.xxLarge} color={COLORS.accent} />
                     <Text style={styles.textGarden}>REGISTRAR</Text>
