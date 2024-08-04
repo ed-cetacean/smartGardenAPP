@@ -24,7 +24,7 @@ const SettingsScreen = () => {
     };
 
     const handleInfo = () => {
-        navigation.navigate('Gardens');
+        navigation.navigate('About');
     };
 
     const handleLogout = () => {

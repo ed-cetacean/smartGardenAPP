@@ -4,7 +4,7 @@
 import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRoute } from '@react-navigation/native';
 import { StyleSheet, View, Text } from 'react-native';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
