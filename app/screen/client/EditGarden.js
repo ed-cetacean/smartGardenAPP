@@ -5,11 +5,10 @@ import { MainSG } from '../../../api/Config';
 import InputCW from '../../../components/Input';
 import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
-import { useUser } from '../../../core/auth/UserProvider';
 
 import React, { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
-import { Swing } from 'react-native-animated-spinkit';
+import { Flow } from 'react-native-animated-spinkit';
 import { StyleSheet, View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import RNBounceable from '@freakycoder/react-native-bounceable';
@@ -19,33 +18,34 @@ import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
 const EditGardenScreen = () => {
     const route = useRoute();
-    const { user } = useUser();
     const { gardenId } = route.params;
     const navigation = useNavigation();
     const { themePallete } = useTheme();
 
-    const [ userData, setUserData ] = useState({
-        email: '', firstName: '', lastName: '',
-        street: '', zip: '', city: '', state: '', country: ''
+    // ---------------------------------------------------------------------- //
+
+    const [ gardenData, setGardenData ] = useState({
+        name: '', description: '', longitude: '', latitude: '', userId: '', sensorPackId: '',
     });
 
-    let isDisabled = userData.email.trim() === '' || userData.firstName.trim() === '' || userData.lastName.trim() === '' ||
-        userData.street.trim() === '' || userData.zip.trim() === '' || userData.city.trim() === '' || userData.state.trim() === '' || userData.country.trim() === '';
     const [ isLoading, setIsLoading ] = useState(false);
+    let isDisabled = gardenData.name.trim() === '' || gardenData.description.trim() === '';
+
 
     // ---------------------------------------------------------------------- //
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch(`${MainSG}Usuario/${user.id}`, {
+                const response = await fetch(`${MainSG}jardin/${gardenId}`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' }
                 });
 
                 if (response.ok) {
                     const data = await response.json();
-                    setUserData(data);
+                    console.error(data);
+                    setGardenData(data);
                 } else {
                     console.error('ERROR: Ha ocurrido un error al intentar cargar los datos del usuario.');
                 }
@@ -61,7 +61,7 @@ const EditGardenScreen = () => {
 
 
     const handleChange = (field, value) => {
-        setUserData({ ...userData, [field]: value });
+        setGardenData({ ...gardenData, [field]: value });
     };
 
     // ---------------------------------------------------------------------- //
@@ -70,20 +70,20 @@ const EditGardenScreen = () => {
         setIsLoading(true);
 
         try {
-            const response = await fetch(`${MainSG}Usuario/${user.id}`, {
-                method: 'POST',
+            const response = await fetch(`${MainSG}jardin/${gardenId}`, {
+                method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userData)
+                body: JSON.stringify(gardenData)
             });
 
             if (response.ok) {
-                console.log('Se han actualizado los datos del usuario.');
+                console.log('Se han actualizado los datos del jardín.');
                 navigation.goBack();
             } else {
-                console.error('ERROR: Ha ocurrido un error al intentar actualizar los datos del usuario.');
+                console.error('ERROR: Ha ocurrido un error al intentar actualizar los datos del jardín.');
             }
         } catch (error) {
-            console.error('ERROR: Ocurrió un problema al intentar actualizar los datos del usuario.', error);
+            console.error('ERROR: Ocurrió un problema al intentar actualizar los datos del jardín.', error);
         } finally {
             setIsLoading(false);
         }
@@ -94,77 +94,25 @@ const EditGardenScreen = () => {
     return (
         <View style={[styles.mainContainer, { backgroundColor: themePallete.background }]}>
             <InputCW
-                placeholder='Correo electrónico'
-                value={userData.email}
-                onChangeText={(text) => handleChange('email', text)}
+                placeholder='Nombre'
+                value={gardenData.name}
+                onChangeText={(text) => handleChange('name', text)}
                 leftIcon={<Icon name='at' size={SIZES.xLarge} color={COLORS.accent} />}
                 autoCapitalize='none'
                 inputMode='email'
-                maxLength={64}
+                maxLength={32}
             />
 
             <InputCW
-                placeholder='Nombres'
-                value={userData.firstName}
-                onChangeText={(text) => handleChange('firstName', text)}
+                placeholder='Descripción'
+                value={gardenData.description}
+                onChangeText={(text) => handleChange('description', text)}
                 leftIcon={<Icon name='account' size={SIZES.xLarge} color={COLORS.accent} />}
                 autoCapitalize='words'
-                maxLength={64}
+                maxLength={32}
             />
 
-            <InputCW
-                placeholder='Apellidos'
-                value={userData.lastName}
-                onChangeText={(text) => handleChange('lastName', text)}
-                leftIcon={<Icon name='account' size={SIZES.xLarge} color={COLORS.accent} />}
-                autoCapitalize='words'
-                maxLength={128}
-            />
 
-            <InputCW
-                placeholder='Calle'
-                value={userData.street}
-                onChangeText={(text) => handleChange('street', text)}
-                leftIcon={<Icon name='road' size={SIZES.xLarge} color={COLORS.accent} />}
-                autoCapitalize='words'
-                maxLength={64}
-            />
-
-            <InputCW
-                placeholder='Código Postal'
-                value={userData.zip}
-                onChangeText={(text) => handleChange('zip', text)}
-                leftIcon={<Icon name='mailbox' size={SIZES.xLarge} color={COLORS.accent} />}
-                inputMode='numeric'
-                maxLength={5}
-            />
-
-            <InputCW
-                placeholder='Ciudad'
-                value={userData.city}
-                onChangeText={(text) => handleChange('city', text)}
-                leftIcon={<Icon name='city' size={SIZES.xLarge} color={COLORS.accent} />}
-                autoCapitalize='words'
-                maxLength={64}
-            />
-
-            <InputCW
-                placeholder='Estado'
-                value={userData.state}
-                onChangeText={(text) => handleChange('state', text)}
-                leftIcon={<Icon name='map' size={SIZES.xLarge} color={COLORS.accent} />}
-                autoCapitalize='words'
-                maxLength={64}
-            />
-
-            <InputCW
-                placeholder='País'
-                value={userData.country}
-                onChangeText={(text) => handleChange('country', text)}
-                leftIcon={<Icon name='earth' size={SIZES.xLarge} color={COLORS.accent} />}
-                autoCapitalize='words'
-                maxLength={64}
-            />
 
             <RNBounceable onPress={handleSaveChanges} disabled={isLoading || isDisabled}
                 style={[ styles.saveButton, { backgroundColor: isLoading || isDisabled ? COLORS.disabled : COLORS.accent } ]} >
