@@ -16,42 +16,63 @@ import { StyleSheet, ScrollView, RefreshControl, View, Text } from 'react-native
 const UsersScreen = () => {
     const navigation = useNavigation();
     const { themePallete } = useTheme();
-    const [ users, setUsers ] = useState([]);
+    const [ inventory, setInventory ] = useState([]);
+    const [ sensorPackType, setSensorPackType ] = useState([]);
+
     const [ loading, setLoading ] = useState(false);
 
     // ---------------------------------------------------------------------- //
 
-    const fetchUsers = async () => {
+    const fetchInventory = async () => {
         try {
-            setLoading(true);
-            const response = await fetch(`${MainSG}Usuario`, {
+            const response = await fetch(`${MainSG}Inventario`, {
                 method: 'GET', headers: { 'Content-Type': 'application/json' }
             });
 
             if (response.ok) {
                 const data = await response.json();
-                setUsers(data);
+                setInventory(data);
+                console.log('Inventario recuperado con éxito.');
 
-                console.log('Usuarios recuperados con éxito.');
+                fetchSensorPackType();
             } else {
-                console.error('ERROR: Ha ocurrido un error al intentar recuperar los usuarios.');
+                console.error('ERROR: Ha ocurrido un error al intentar recuperar el inventario.');
             }
         } catch (error) {
-            console.error('ERROR: No se pudo recuperar los usuarios.', error);
-        } finally {
-            setLoading(false);
+            console.error('ERROR: No se pudo recuperar el inventario.', error);
+        }
+    };
+
+    const fetchSensorPackType = async () => {
+        try {
+            const response = await fetch(`${MainSG}SensorPackType`, {
+                method: 'GET', headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setSensorPackType(data);
+
+                console.log('Tipos de SensorPack recuperado con éxito.');
+            } else {
+                console.error('ERROR: Ha ocurrido un error al intentar recuperar lost tipos de SensorPack.');
+            }
+        } catch (error) {
+            console.error('ERROR: No se pudo recuperar los tipos de SensorPack.', error);
         }
     };
 
     // ---------------------------------------------------------------------- //
 
     useEffect(() => {
-        fetchUsers();
+        setLoading(true);
+        fetchInventory();
+        setLoading(false);
     }, []);
 
     // ---------------------------------------------------------------------- //
 
-    const handleRefresh = () => { fetchUsers(); };
+    const handleRefresh = () => { fetchInventory(); };
 
     if (loading) {
         return (
@@ -61,10 +82,9 @@ const UsersScreen = () => {
         );
     }
 
-
     // ---------------------------------------------------------------------- //
 
-    const showUserInfo = (id) => {
+    const addInventory = (id) => {
         navigation.navigate('UserInfo', { userId: id });
     };
 
@@ -75,7 +95,7 @@ const UsersScreen = () => {
 
             {/* TITULO */}
             <View style={styles.titleContainer}>
-                <Text style={styles.titleText}>USUARIOS REGISTRADOS</Text>
+                <Text style={styles.titleText}>INVENTARIO</Text>
             </View>
 
             {/* INFORMACIÓN */}
@@ -83,9 +103,9 @@ const UsersScreen = () => {
                 refreshControl={ <RefreshControl refreshing={loading} onRefresh={handleRefresh}
                     progressBackgroundColor={themePallete.alterText} colors={[ themePallete.background ]} /> }>
 
-                {users.map((user, index) => (
-                    <RNBounceable key={user.id} style={[ styles.itemContainer, { backgroundColor: themePallete.background } ]}
-                        onPress={() => showUserInfo(user.id)}>
+                {inventory.map((sensorPack, index) => (
+                    <RNBounceable key={sensorPack.id} style={[ styles.itemContainer, { backgroundColor: themePallete.background } ]}
+                        onPress={() => addInventory(sensorPack.id)}>
 
                         {/* Índice de usuario */}
                         <View style={styles.indexItem}>
@@ -94,8 +114,8 @@ const UsersScreen = () => {
 
                         {/* Información de pago */}
                         <View style={styles.infoContainer}>
-                            <Text style={[ styles.infoText, { color: themePallete.text } ]}>{user.firstName} {user.lastName}</Text>
-                            <Text style={ { color: themePallete.text} }>{user.email}</Text>
+                            <Text style={[ styles.infoText, { color: themePallete.text } ]}>{sensorPack.sensorPackTypeId}</Text>
+                            <Text style={ { color: themePallete.text} }>{sensorPack.stock}</Text>
                         </View>
                     </RNBounceable>
                 ))}
