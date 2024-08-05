@@ -1,19 +1,72 @@
 
 // -------------------------------------------------------------------------- //
 
+import { MainSG } from '../../../api/Config';
 import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 
+import { Swing } from 'react-native-animated-spinkit';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect, useCallback } from 'react';
 import RNBounceable from '@freakycoder/react-native-bounceable';
-import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
-import { StyleSheet, ScrollView, View, Text, Image } from 'react-native';
+import { StyleSheet, ScrollView, RefreshControl, View, Text } from 'react-native';
 
 // -------------------------------------------------------------------------- //
 
-const InventoryScreen = () => {
+const UsersScreen = () => {
+    const navigation = useNavigation();
     const { themePallete } = useTheme();
+    const [ users, setUsers ] = useState([]);
+    const [ loading, setLoading ] = useState(false);
 
     // ---------------------------------------------------------------------- //
+
+    const fetchUsers = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch(`${MainSG}Usuario`, {
+                method: 'GET', headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setUsers(data);
+
+                console.log('Usuarios recuperados con éxito.');
+            } else {
+                console.error('ERROR: Ha ocurrido un error al intentar recuperar los usuarios.');
+            }
+        } catch (error) {
+            console.error('ERROR: No se pudo recuperar los usuarios.', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // ---------------------------------------------------------------------- //
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    // ---------------------------------------------------------------------- //
+
+    const handleRefresh = () => { fetchUsers(); };
+
+    if (loading) {
+        return (
+            <View style={[styles.mainContainer, { backgroundColor: themePallete.background, alignItems: 'center', justifyContent: 'center', }]}>
+                <Swing size={SIZES.xxLarge * 1.8} color={COLORS.accent} />
+            </View>
+        );
+    }
+
+
+    // ---------------------------------------------------------------------- //
+
+    const showUserInfo = (id) => {
+        navigation.navigate('UserInfo', { userId: id });
+    };
 
     // ---------------------------------------------------------------------- //
 
@@ -22,13 +75,30 @@ const InventoryScreen = () => {
 
             {/* TITULO */}
             <View style={styles.titleContainer}>
-                <Text style={styles.titleText}>NUESTRO EQUIPO DE DESARROLLO</Text>
+                <Text style={styles.titleText}>USUARIOS REGISTRADOS</Text>
             </View>
 
             {/* INFORMACIÓN */}
-            <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+            <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}
+                refreshControl={ <RefreshControl refreshing={loading} onRefresh={handleRefresh}
+                    progressBackgroundColor={themePallete.alterText} colors={[ themePallete.background ]} /> }>
 
-                {/* ... */}
+                {users.map((user, index) => (
+                    <RNBounceable key={user.id} style={[ styles.itemContainer, { backgroundColor: themePallete.background } ]}
+                        onPress={() => showUserInfo(user.id)}>
+
+                        {/* Índice de usuario */}
+                        <View style={styles.indexItem}>
+                            <Text style={styles.indexText}>{index + 1}</Text>
+                        </View>
+
+                        {/* Información de pago */}
+                        <View style={styles.infoContainer}>
+                            <Text style={[ styles.infoText, { color: themePallete.text } ]}>{user.firstName} {user.lastName}</Text>
+                            <Text style={ { color: themePallete.text} }>{user.email}</Text>
+                        </View>
+                    </RNBounceable>
+                ))}
 
             </ScrollView>
 
@@ -69,10 +139,48 @@ const styles = StyleSheet.create({
 
     // ---------------------------------------------------------------------- //
 
+    // ---------------------------------------------------------------------- //
+
+    itemContainer: {
+        marginVertical: 6,
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%', height: 80,
+        opacity: .9, elevation: 4,
+    },
+
+    // ---------------------------------------------------------------------- //
+
+    indexItem: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '14%', height: '100%',
+        backgroundColor: COLORS.accent,
+    },
+
+    indexText: {
+        fontWeight: 'bold',
+        color: COLORS.light,
+        fontSize: SIZES.large,
+    },
+
+    // ---------------------------------------------------------------------- //
+
+    infoContainer: {
+        paddingHorizontal: 14,
+        justifyContent: 'center',
+        width: '100%', height: '100%',
+    },
+
+    infoText: {
+        fontWeight: 'bold',
+        fontSize: SIZES.medium,
+    },
+
 });
 
 // -------------------------------------------------------------------------- //
 
-export default InventoryScreen;
+export default UsersScreen;
 
 // -------------------------------------------------------------------------- //

@@ -18,6 +18,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // Admin:
 import UsersScreen from './screen/admin/Users';
+import UserInfoScreen from './screen/admin/UserInfo';
 import SalesScreen from './screen/admin/Sales';
 import InventoryScreen from './screen/admin/Inventory';
 
@@ -194,6 +195,8 @@ export function StackNav() {
             <Stack.Screen name='CreateGarden' component={CreateGardenScreen} />
             <Stack.Screen name='Payment' component={PaymentScreen} />
             <Stack.Screen name='PaymentInfo' component={PaymentInfoScreen} />
+
+            <Stack.Screen name='UserInfo' component={UserInfoScreen} />
 
             {/* Acceso directo al BottomNav: */}
             <Stack.Screen name='BottomNavClient' component={BottomNavClient} options={{ headerShown: false }} />

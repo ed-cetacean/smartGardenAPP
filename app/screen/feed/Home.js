@@ -26,7 +26,6 @@ const HomeScreen = () => {
     const [ loading, setLoading ] = useState(false);
 
     const isSearchDisabled = query.trim() === '';
-    const [ isLoading, setIsLoading ] = useState(false);
 
     // ---------------------------------------------------------------------- //
 
@@ -81,13 +80,13 @@ const HomeScreen = () => {
                     leftIcon={<Icon name='flower' size={SIZES.xLarge} color={COLORS.accent} />}
                 />
 
-                <RNBounceable disabled={isLoading || isSearchDisabled} onPress={fetchPlants}
-                    style={[ styles.searchButton, { backgroundColor: isLoading || isSearchDisabled ? COLORS.disabled : COLORS.accent } ]}
+                <RNBounceable disabled={loading || isSearchDisabled} onPress={fetchPlants}
+                    style={[ styles.searchButton, { backgroundColor: loading || isSearchDisabled ? COLORS.disabled : COLORS.accent } ]}
                 >
                     {loading ? (
                         <Flow size={SIZES.xLarge} color={COLORS.light} />
                     ) : (
-                        <Text style={[styles.searchText, { color: isLoading || isSearchDisabled ? COLORS.alterDisabled : COLORS.disabled} ]}>BUSCAR</Text>
+                        <Text style={[styles.searchText, { color: loading || isSearchDisabled ? COLORS.alterDisabled : COLORS.disabled} ]}>BUSCAR</Text>
                     )}
 
                 </RNBounceable>
