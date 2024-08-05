@@ -50,7 +50,7 @@ const SettingsScreen = () => {
             </View>
 
             {/* Otras opciones... Hehe */}
-            {user.role === 'client' && (
+            { user !== null && user.role === 'client' && (
                 <View style={styles.optionContainer}>
                     <RNBounceable style={[ styles.optionAltContainer, styles.logoutContainer ]} onPress={handleFAQ} >
                         <MaterialCommunityIcons name='comment-question' size={SIZES.xLarge} color={ COLORS.accent } style={styles.iconOption} />

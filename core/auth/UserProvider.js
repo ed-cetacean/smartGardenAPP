@@ -31,8 +31,7 @@ export const UserProvider = ({ children }) => {
     const logout = async () => {
 
         try {
-            setUser(null);
-            await AsyncStorage.removeItem('userData');
+            await AsyncStorage.removeItem('userData'); setUser(null);
             navigation.reset({ index: 0, routes: [{ name: 'Start' }] });
         } catch (error) {
             console.error("ERROR: Hubo un problema al intentar cerrar la sesión: ", error);

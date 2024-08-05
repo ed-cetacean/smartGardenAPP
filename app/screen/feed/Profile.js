@@ -98,7 +98,7 @@ const ProfileScreen = () => {
                     </Text>
                 </View>
 
-                {user.role === 'client' && (
+                {user !== null && user.role === 'client' && (
                     <>
                         {/* Sección de pagos */}
                         <RNBounceable onPress={handlePayments}>

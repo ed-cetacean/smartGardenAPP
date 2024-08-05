@@ -37,7 +37,7 @@ const StartScreen = () => {
 
     useEffect(() => {
 
-        if (user) {
+        if (user !== null) {
             if (user.role === 'client') {
                 navigation.reset({
                     index: 0,
