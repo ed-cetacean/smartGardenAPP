@@ -33,6 +33,7 @@ import ProfileScreen from './screen/feed/Profile';
 import EditProfileScreen from './screen/feed/EditProfile';
 import SettingsScreen from './screen/feed/Settings';
 import AboutScreen from './screen/feed/About';
+import FAQScreen from './screen/feed/FAQ';
 
 // Start:
 import StartScreen from './screen/start/Start';
@@ -169,6 +170,7 @@ export function StackNav() {
             <Stack.Screen name='EditProfile' component={EditProfileScreen} />
             <Stack.Screen name='Settings' component={SettingsScreen} />
             <Stack.Screen name='About' component={AboutScreen} />
+            <Stack.Screen name='FAQ' component={FAQScreen} />
 
             <Stack.Screen name='PlantInfo' component={PlantInfoScreen} />
             <Stack.Screen name='GardenStats' component={GardenStatsScreen} />

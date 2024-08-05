@@ -238,7 +238,7 @@ const GardenStatsScreen = () => {
             {/* Nombre del jardín */}
             <Text style={styles.gardenName}>{(gardenName).toUpperCase()}</Text>
 
-            <ScrollView style={styles.scrollContainer}>
+            <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                 {/* Humedad de suelo */}
                 {moistureData.length > 0 && (
                     <>

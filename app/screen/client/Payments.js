@@ -86,10 +86,9 @@ const PaymentScreen = () => {
                 <Text style={styles.titleText}>HISTORIAL DE COMPRAS</Text>
             </View>
 
-            <ScrollView style={styles.scrollContainer}
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={handleRefresh}
-                        progressBackgroundColor={themePallete.alterText} colors={[ themePallete.background ]} /> }>
+            <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}
+                refreshControl={ <RefreshControl refreshing={refreshing} onRefresh={handleRefresh}
+                    progressBackgroundColor={themePallete.alterText} colors={[ themePallete.background ]} /> }>
 
                 {/* Lista de pagos */}
                 <PaymentList />

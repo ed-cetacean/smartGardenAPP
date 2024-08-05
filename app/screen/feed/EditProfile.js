@@ -89,6 +89,12 @@ const EditProfileScreen = () => {
 
     return (
         <View style={[styles.mainContainer, { backgroundColor: themePallete.background }]}>
+
+            {/* TITULO */}
+            <View style={styles.titleContainer}>
+                <Text style={styles.titleText}>EDITAR PERFIL</Text>
+            </View>
+
             <InputCW
                 placeholder='Correo electrónico'
                 value={userData.email}
@@ -180,17 +186,33 @@ const EditProfileScreen = () => {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        padding: 40,
+        padding: 40, paddingTop: 0,
     },
+
+    // ---------------------------------------------------------------------- //
+
+    titleContainer: {
+        width: '100%', height: '10%',
+        alignItems: 'center', justifyContent: 'center',
+    },
+
+    titleText: {
+        fontWeight: 'bold',
+        color: COLORS.accent,
+        fontSize: SIZES.large + 2,
+    },
+
+    // ---------------------------------------------------------------------- //
+
     saveButton: {
-        backgroundColor: COLORS.accent,
-        borderRadius: 4,
+        width: '100%',
         padding: 15,
-        alignItems: 'center',
         marginTop: 20,
+        borderRadius: 4,
+        alignItems: 'center',
     },
+
     saveText: {
-        color: '#fff',
         fontWeight: 'bold',
         fontSize: SIZES.medium,
     },

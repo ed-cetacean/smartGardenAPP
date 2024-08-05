@@ -20,7 +20,7 @@ const SettingsScreen = () => {
     // ---------------------------------------------------------------------- //
 
     const handleFAQ = () => {
-        navigation.navigate('Gardens');
+        navigation.navigate('FAQ');
     };
 
     const handleInfo = () => {
