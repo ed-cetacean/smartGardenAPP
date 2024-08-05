@@ -21,6 +21,7 @@ import UsersScreen from './screen/admin/Users';
 import UserInfoScreen from './screen/admin/UserInfo';
 import SalesScreen from './screen/admin/Sales';
 import InventoryScreen from './screen/admin/Inventory';
+import AddInventoryScreen from './screen/admin/AddInventory';
 
 // Client:
 import PlantInfoScreen from './screen/client/PlantInfo';
@@ -195,8 +196,8 @@ export function StackNav() {
             <Stack.Screen name='CreateGarden' component={CreateGardenScreen} />
             <Stack.Screen name='Payment' component={PaymentScreen} />
             <Stack.Screen name='PaymentInfo' component={PaymentInfoScreen} />
-
             <Stack.Screen name='UserInfo' component={UserInfoScreen} />
+            <Stack.Screen name='AddInventory' component={AddInventoryScreen} />
 
             {/* Acceso directo al BottomNav: */}
             <Stack.Screen name='BottomNavClient' component={BottomNavClient} options={{ headerShown: false }} />

@@ -85,7 +85,14 @@ const UsersScreen = () => {
     // ---------------------------------------------------------------------- //
 
     const addInventory = (id) => {
-        navigation.navigate('UserInfo', { userId: id });
+        navigation.navigate('AddInventory', { sensorPackType: id });
+    };
+
+    // ---------------------------------------------------------------------- //
+
+    const showSensorPackName = (id) => {
+        const sensorPack = sensorPackType.find(pack => pack.id === id);
+        return sensorPack ? sensorPack.name : 'Desconocido';
     };
 
     // ---------------------------------------------------------------------- //
@@ -105,7 +112,7 @@ const UsersScreen = () => {
 
                 {inventory.map((sensorPack, index) => (
                     <RNBounceable key={sensorPack.id} style={[ styles.itemContainer, { backgroundColor: themePallete.background } ]}
-                        onPress={() => addInventory(sensorPack.id)}>
+                        onPress={() => addInventory(sensorPack.sensorPackTypeId)}>
 
                         {/* Índice de usuario */}
                         <View style={styles.indexItem}>
@@ -114,7 +121,7 @@ const UsersScreen = () => {
 
                         {/* Información de pago */}
                         <View style={styles.infoContainer}>
-                            <Text style={[ styles.infoText, { color: themePallete.text } ]}>{sensorPack.sensorPackTypeId}</Text>
+                            <Text style={[ styles.infoText, { color: themePallete.text } ]}>{showSensorPackName(sensorPack.sensorPackTypeId)}</Text>
                             <Text style={ { color: themePallete.text} }>{sensorPack.stock}</Text>
                         </View>
                     </RNBounceable>
