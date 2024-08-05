@@ -13,7 +13,7 @@ import { StyleSheet, ScrollView, View, Text, Switch } from 'react-native';
 // -------------------------------------------------------------------------- //
 
 const SettingsScreen = () => {
-    const { logout } = useUser();
+    const { user, logout } = useUser();
     const navigation = useNavigation();
     const { toggleTheme, themePallete, isDark } = useTheme();
 
@@ -50,12 +50,14 @@ const SettingsScreen = () => {
             </View>
 
             {/* Otras opciones... Hehe */}
-            <View style={styles.optionContainer}>
-                <RNBounceable style={[ styles.optionAltContainer, styles.logoutContainer ]} onPress={handleFAQ} >
-                    <MaterialCommunityIcons name='comment-question' size={SIZES.xLarge} color={ COLORS.accent } style={styles.iconOption} />
-                    <Text style={[ styles.textOption, { color: themePallete.text } ]}>Dudas frecuentes</Text>
-                </RNBounceable>
-            </View>
+            {user.role === 'client' && (
+                <View style={styles.optionContainer}>
+                    <RNBounceable style={[ styles.optionAltContainer, styles.logoutContainer ]} onPress={handleFAQ} >
+                        <MaterialCommunityIcons name='comment-question' size={SIZES.xLarge} color={ COLORS.accent } style={styles.iconOption} />
+                        <Text style={[ styles.textOption, { color: themePallete.text } ]}>Dudas frecuentes</Text>
+                    </RNBounceable>
+                </View>
+            )}
 
             <View style={styles.optionContainer}>
                 <RNBounceable style={[ styles.optionAltContainer, styles.logoutContainer ]} onPress={handleInfo} >

@@ -20,10 +20,6 @@ const ProfileScreen = () => {
     const { themePallete } = useTheme();
     const [ refreshing, setRefreshing ] = useState(false);
 
-    // ---------------------------------------------------------------------- //
-
-
-
     // ---------------------------------------------------------------------- //`
 
     const handleGardens = () => {
@@ -102,21 +98,25 @@ const ProfileScreen = () => {
                     </Text>
                 </View>
 
-                {/* Sección de pagos */}
-                <RNBounceable onPress={handlePayments}>
-                    <View style={styles.sectionButton}>
-                        <Icon name='wallet' size={SIZES.large} color={COLORS.accent} />
-                        <Text style={[ styles.sectionText, { color: themePallete.text } ]}>Facturas</Text>
-                    </View>
-                </RNBounceable>
+                {user.role === 'client' && (
+                    <>
+                        {/* Sección de pagos */}
+                        <RNBounceable onPress={handlePayments}>
+                            <View style={styles.sectionButton}>
+                                <Icon name='wallet' size={SIZES.large} color={COLORS.accent} />
+                                <Text style={[ styles.sectionText, { color: themePallete.text } ]}>Facturas</Text>
+                            </View>
+                        </RNBounceable>
 
-                {/* Sección de jardines */}
-                <RNBounceable onPress={handleGardens}>
-                    <View style={styles.sectionButton}>
-                        <Icon name='leaf' size={SIZES.large} color={COLORS.accent} />
-                        <Text style={[ styles.sectionText, { color: themePallete.text } ]}>Jardines</Text>
-                    </View>
-                </RNBounceable>
+                        {/* Sección de jardines */}
+                        <RNBounceable onPress={handleGardens}>
+                            <View style={styles.sectionButton}>
+                                <Icon name='leaf' size={SIZES.large} color={COLORS.accent} />
+                                <Text style={[ styles.sectionText, { color: themePallete.text } ]}>Jardines</Text>
+                            </View>
+                        </RNBounceable>
+                    </>
+                )}
 
             </View>
 

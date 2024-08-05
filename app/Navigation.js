@@ -11,11 +11,15 @@ import EditProfileButton from '../components/EditProfileButton';
 import { Entypo as Icon } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ColorfulTabBar } from 'react-navigation-tabbar-collection';
+import { MaterialCommunityIcons as IconMC } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // -------------------------------------------------------------------------- //
 
 // Admin:
+import UsersScreen from './screen/admin/Users';
+import SalesScreen from './screen/admin/Sales';
+import InventoryScreen from './screen/admin/Inventory';
 
 // Client:
 import PlantInfoScreen from './screen/client/PlantInfo';
@@ -64,7 +68,7 @@ function BottomNavClient() {
 
                 <Bottom.Screen name='Home' component={HomeScreen} options={{
                     title: 'Inicio', color: 'accent', icon: ({ focused, color, size }) => (
-                    <Icon name="home" size={size} color={color} /> )
+                    <Icon name='home' size={size} color={color} /> )
                     }}
                 />
                 <Bottom.Screen
@@ -74,7 +78,7 @@ function BottomNavClient() {
                         title: 'Jardínes',
                         color: 'accent',
                         icon: ({ focused, color, size }) => (
-                            <Icon name="leaf" size={size} color={color} />
+                            <Icon name='leaf' size={size} color={color} />
                         ),
                     }}
                 />
@@ -85,7 +89,7 @@ function BottomNavClient() {
                         title: 'Compras',
                         color: 'accent',
                         icon: ({ focused, color, size }) => (
-                            <Icon name="shop" size={size} color={color} />
+                            <Icon name='shop' size={size} color={color} />
                         ),
                     }}
                 />
@@ -116,24 +120,36 @@ function BottomNavAdmin() {
             <ColorfulTabBar darkMode={isDark} maxWidth={'92%'} {...props} colorPalette={COLORS} /> )} >
 
                 <Bottom.Screen
-                    name='Gardens'
-                    component={GardensScreen}
+                    name='Users'
+                    component={UsersScreen}
                     options={{
-                        title: 'Jardínes',
+                        title: 'Usuarios',
                         color: 'accent',
                         icon: ({ focused, color, size }) => (
-                            <Icon name="leaf" size={size} color={color} />
+                            <IconMC name='account-multiple' size={size} color={color} />
                         ),
                     }}
                 />
                 <Bottom.Screen
-                    name='Shopping'
-                    component={ShoppingScreen}
+                    name='Sales'
+                    component={SalesScreen}
                     options={{
-                        title: 'Compras',
+                        title: 'Ventas',
                         color: 'accent',
                         icon: ({ focused, color, size }) => (
-                            <Icon name="shop" size={size} color={color} />
+                            <IconMC name='point-of-sale' size={size} color={color} />
+                        ),
+                    }}
+                />
+
+                <Bottom.Screen
+                    name='Inventory'
+                    component={InventoryScreen}
+                    options={{
+                        title: 'Inventario',
+                        color: 'accent',
+                        icon: ({ focused, color, size }) => (
+                            <IconMC name='book-multiple' size={size} color={color} />
                         ),
                     }}
                 />
