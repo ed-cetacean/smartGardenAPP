@@ -5,12 +5,14 @@ import { MainSG } from '../../../api/Config';
 import { SourceIMG } from '../../../ui/Images';
 import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
+import { useUser } from '../../../core/auth/UserProvider';
 import { handleIntegrationMP } from '../../../core/payment/IntegrationMP';
 
 import React, { useEffect, useState } from 'react';
 import { openBrowserAsync } from 'expo-web-browser';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Swing } from 'react-native-animated-spinkit';
+import { useNavigation } from '@react-navigation/native';
 import RNBounceable from '@freakycoder/react-native-bounceable';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import { StyleSheet, Dimensions, RefreshControl,ImageBackground, ScrollView, View, Text } from 'react-native';
@@ -20,6 +22,8 @@ import { StyleSheet, Dimensions, RefreshControl,ImageBackground, ScrollView, Vie
 const itemSize =  Dimensions.get('window').width * 0.78;
 
 const MembershipScreen = () => {
+    const { user } = useUser();
+    const navigation = useNavigation();
     const { themePallete } = useTheme();
 
     const [ products, setProducts ] = useState([]);
@@ -70,16 +74,38 @@ const MembershipScreen = () => {
     // ---------------------------------------------------------------------- //
 
     const showMemberships = () => {
-        console.error('Funcionalidad no disponible');
+        navigation.navigate('Memberships');
     };
 
     // ---------------------------------------------------------------------- //
 
-    const showPayment = async (name, description, price, type) => {
+    const insertPayment = async (id) => {
+
+        try {
+            const response = await fetch(`${MainSG}Venta`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ clientId: user.id, sensorPackTypeId: id }),
+            });
+
+
+            if (response.ok) {
+                console.log('Compra realizada con éxito.');
+                navigation.navigate('Shopping');
+            } else {
+                console.error('Ha ocurrido un error al intentar realizar la compra.');
+            }
+        } catch (error) {
+            console.error('No se pudo reaalizar la compra.', error);
+        }
+
+    };
+
+    const showPayment = async (id, name, description, price, type) => {
         const data = await handleIntegrationMP(name, description, price, type);
 
         if (data) {
             openBrowserAsync(data);
+            insertPayment(id);
         } else {
             console.error('No se pudo realizar la compra del paquete.');
         }
@@ -107,7 +133,7 @@ const MembershipScreen = () => {
 
                 {/* Lista de paquetes */}
                 {products.map((product) => (
-                    <RNBounceable key={product.id} onPress={() => { showPayment(product.name, product.description, product.salePrice, 'Sensor Pack'); }}>
+                    <RNBounceable key={product.id} onPress={() => { showPayment(product.id, product.name, product.description, product.salePrice, 'Sensor Pack'); }}>
                         <ImageBackground style={styles.sensorPack} imageStyle={styles.sensorImage} source={SourceIMG.sensorPack}>
                             <View style={styles.sensorContainer}>
 
