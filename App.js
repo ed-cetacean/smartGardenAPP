@@ -21,7 +21,7 @@ const toastConfig = {
                 backgroundColor: COLORS.dark,
                 borderLeftColor: COLORS.green,
                 borderLeftWidth: 8,
-                marginTop: 20,
+                marginTop: 50,
                 width: '80%',
                 height: 80,
             }}
@@ -51,7 +51,7 @@ const toastConfig = {
                 backgroundColor: COLORS.dark,
                 borderLeftColor: COLORS.red,
                 borderLeftWidth: 8,
-                marginTop: 20,
+                marginTop: 50,
                 width: '80%',
                 height: 80,
             }}
