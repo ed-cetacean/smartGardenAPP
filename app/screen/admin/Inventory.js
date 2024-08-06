@@ -13,7 +13,7 @@ import { StyleSheet, ScrollView, RefreshControl, View, Text } from 'react-native
 
 // -------------------------------------------------------------------------- //
 
-const UsersScreen = () => {
+const InventoryScreen = () => {
     const navigation = useNavigation();
     const { themePallete } = useTheme();
     const [ inventory, setInventory ] = useState([]);
@@ -40,6 +40,8 @@ const UsersScreen = () => {
             }
         } catch (error) {
             console.error('ERROR: No se pudo recuperar el inventario.', error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -67,7 +69,6 @@ const UsersScreen = () => {
     useEffect(() => {
         setLoading(true);
         fetchInventory();
-        setLoading(false);
     }, []);
 
     // ---------------------------------------------------------------------- //
@@ -84,15 +85,20 @@ const UsersScreen = () => {
 
     // ---------------------------------------------------------------------- //
 
-    const addInventory = (id) => {
-        navigation.navigate('AddInventory', { sensorPackType: id });
+    const showSensorPackName = (id) => {
+        const sensorPack = sensorPackType.find(pack => pack.id === id);
+        return sensorPack ? sensorPack.name : 'Desconocido';
+    };
+
+    const showSensorPackPrice = (id) => {
+        const sensorPack = sensorPackType.find(pack => pack.id === id);
+        return sensorPack ? sensorPack.price : 0;
     };
 
     // ---------------------------------------------------------------------- //
 
-    const showSensorPackName = (id) => {
-        const sensorPack = sensorPackType.find(pack => pack.id === id);
-        return sensorPack ? sensorPack.name : 'Desconocido';
+    const addInventory = (id, stock, price) => {
+        navigation.navigate('AddInventory', { sensorPackId: id, sensorPackStock: stock, sensorPackPrice: price });
     };
 
     // ---------------------------------------------------------------------- //
@@ -112,7 +118,9 @@ const UsersScreen = () => {
 
                 {inventory.map((sensorPack, index) => (
                     <RNBounceable key={sensorPack.id} style={[ styles.itemContainer, { backgroundColor: themePallete.background } ]}
-                        onPress={() => addInventory(sensorPack.sensorPackTypeId)}>
+                        onPress={() => {
+                            addInventory(sensorPack.sensorPackTypeId, sensorPack.stock, showSensorPackPrice(sensorPack.sensorPackTypeId))
+                        }}>
 
                         {/* Índice de usuario */}
                         <View style={styles.indexItem}>
@@ -122,7 +130,7 @@ const UsersScreen = () => {
                         {/* Información de pago */}
                         <View style={styles.infoContainer}>
                             <Text style={[ styles.infoText, { color: themePallete.text } ]}>{showSensorPackName(sensorPack.sensorPackTypeId)}</Text>
-                            <Text style={ { color: themePallete.text} }>{sensorPack.stock}</Text>
+                            <Text style={ { color: themePallete.text} }>Stock actual: {sensorPack.stock}</Text>
                         </View>
                     </RNBounceable>
                 ))}
@@ -208,6 +216,6 @@ const styles = StyleSheet.create({
 
 // -------------------------------------------------------------------------- //
 
-export default UsersScreen;
+export default InventoryScreen;
 
 // -------------------------------------------------------------------------- //
