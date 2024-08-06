@@ -24,12 +24,40 @@ const AddInventoryScreen = () => {
     const { sensorPackId, sensorPackStock, sensorPackPrice } = route.params;
 
     const [ newStockAndPrice, setNewStockAndPrice ] = useState({
-        newStock: sensorPackStock.toString(),
-        newSalePrice: sensorPackPrice.toFixed(2).toString(),
+        newStock: sensorPackStock,
+        newSalePrice: sensorPackPrice.toFixed(2),
     });
 
     const [ isLoading, setIsLoading ] = useState(false);
     const isDisabled = newStockAndPrice.newSalePrice === '';
+
+    // ---------------------------------------------------------------------- //
+
+    const handleInspection = async () => {
+        console.log('...');
+    };
+
+    const handleSaveChanges = async () => {
+        setIsLoading(true);
+
+        try {
+            const response = await fetch(`${MainSG}inventario/update/${sensorPackId}`, {
+                method: 'PUT', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newStockAndPrice)
+            });
+
+            if (response.ok) {
+                console.log('Se ha actualizado el inventario.');
+                navigation.navigate('Inventory');
+            } else {
+                console.error('Ha ocurrido un error al intentar actualizar el inventario.');
+            }
+        } catch (error) {
+            console.error('No se puddo actualizar el inventario.', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     // ---------------------------------------------------------------------- //
 
@@ -58,6 +86,25 @@ const AddInventoryScreen = () => {
             />
 
             {/* BOTONES */}
+            <View style={styles.buttonContainer}>
+                <RNBounceable onPress={() => { handleInspection(); } } disabled={isLoading}
+                    style={[ styles.saveButton, { backgroundColor: isLoading ? COLORS.disabled : COLORS.accent } ]} >
+                    {isLoading ? (
+                        <Flow size={SIZES.xLarge} color={COLORS.light} />
+                    ) : (
+                        <Text style={[styles.saveText, { color: isLoading ? COLORS.alterDisabled : COLORS.disabled} ]}>INSPECCIONAR</Text>
+                    )}
+                </RNBounceable>
+
+                <RNBounceable onPress={() => { handleSaveChanges(); }} disabled={isLoading || isDisabled}
+                    style={[ styles.saveButton, { backgroundColor: isLoading || isDisabled ? COLORS.disabled : COLORS.accent } ]} >
+                    {isLoading ? (
+                        <Flow size={SIZES.xLarge} color={COLORS.light} />
+                    ) : (
+                        <Text style={[styles.saveText, { color: isLoading || isDisabled ? COLORS.alterDisabled : COLORS.disabled} ]}>GUARDAR</Text>
+                    )}
+                </RNBounceable>
+            </View>
 
         </View>
     );

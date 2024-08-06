@@ -192,7 +192,7 @@ const UserInfoScreen = () => {
             />
 
             <View style={styles.buttonContainer}>
-                <RNBounceable onPress={() => { handleDeleteUser();} } disabled={isLoading}
+                <RNBounceable onPress={() => { handleDeleteUser(); } } disabled={isLoading}
                     style={[ styles.saveButton, { backgroundColor: isLoading ? COLORS.disabled : COLORS.accent } ]} >
                     {isLoading ? (
                         <Flow size={SIZES.xLarge} color={COLORS.light} />
