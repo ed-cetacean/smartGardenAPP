@@ -23,17 +23,9 @@ const AddInventoryScreen = () => {
     const { themePallete } = useTheme();
     const { sensorPackId, sensorPackStock, sensorPackPrice } = route.params;
 
-    const initialPrice = sensorPackPrice ? sensorPackPrice.toFixed(2).toString() : '0.00';
-
-
     const [ newStockAndPrice, setNewStockAndPrice ] = useState({
-        // newStock: sensorPackStock,
-        // newSalePrice: sensorPackPrice
-
         newStock: sensorPackStock.toString(),
-        newSalePrice: initialPrice,
-
-
+        newSalePrice: sensorPackPrice.toFixed(2).toString(),
     });
 
     const [ isLoading, setIsLoading ] = useState(false);

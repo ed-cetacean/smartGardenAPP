@@ -92,7 +92,7 @@ const InventoryScreen = () => {
 
     const showSensorPackPrice = (id) => {
         const sensorPack = sensorPackType.find(pack => pack.id === id);
-        return sensorPack ? sensorPack.price : 0;
+        return sensorPack ? sensorPack.salePrice : 0;
     };
 
     // ---------------------------------------------------------------------- //
