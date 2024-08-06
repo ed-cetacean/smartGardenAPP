@@ -11,7 +11,6 @@ import React, { useEffect, useState } from 'react';
 import { openBrowserAsync } from 'expo-web-browser';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Swing } from 'react-native-animated-spinkit';
-import { useNavigation } from '@react-navigation/native';
 import RNBounceable from '@freakycoder/react-native-bounceable';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import { StyleSheet, Dimensions, RefreshControl,ImageBackground, ScrollView, View, Text } from 'react-native';
@@ -20,8 +19,7 @@ import { StyleSheet, Dimensions, RefreshControl,ImageBackground, ScrollView, Vie
 
 const itemSize =  Dimensions.get('window').width * 0.78;
 
-const ShoppingScreen = () => {
-    const navigation = useNavigation();
+const MembershipScreen = () => {
     const { themePallete } = useTheme();
 
     const [ products, setProducts ] = useState([]);
@@ -72,7 +70,7 @@ const ShoppingScreen = () => {
     // ---------------------------------------------------------------------- //
 
     const showMemberships = () => {
-        navigation.navigate('Memberships');
+        console.error('Funcionalidad no disponible');
     };
 
     // ---------------------------------------------------------------------- //
@@ -222,6 +220,6 @@ const styles = StyleSheet.create({
 
 // -------------------------------------------------------------------------- //
 
-export default ShoppingScreen;
+export default MembershipScreen;
 
 // -------------------------------------------------------------------------- //

@@ -34,6 +34,7 @@ import CreateGardenScreen from './screen/client/CreateGarden';
 import ShoppingScreen from './screen/client/Shopping';
 import PaymentScreen from './screen/client/Payments';
 import PaymentInfoScreen from './screen/client/PaymentInfo';
+import MembershipScreen from './screen/client/Memberships';
 
 // Feed:
 import HomeScreen from './screen/feed/Home';
@@ -192,6 +193,7 @@ export function StackNav() {
             <Stack.Screen name='About' component={AboutScreen} />
             <Stack.Screen name='FAQ' component={FAQScreen} />
 
+            <Stack.Screen name='Memberships' component={MembershipScreen} />
             <Stack.Screen name='PlantInfo' component={PlantInfoScreen} />
             <Stack.Screen name='GardenStats' component={GardenStatsScreen} />
             <Stack.Screen name='EditGarden' component={EditGardenScreen} />
