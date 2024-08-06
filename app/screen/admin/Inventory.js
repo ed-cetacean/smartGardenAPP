@@ -97,8 +97,13 @@ const InventoryScreen = () => {
 
     // ---------------------------------------------------------------------- //
 
-    const addInventory = (id, stock, price) => {
-        navigation.navigate('AddInventory', { sensorPackId: id, sensorPackStock: stock, sensorPackPrice: price });
+    const addInventory = (id, name, stock, price) => {
+        navigation.navigate('AddInventory', {
+            sensorPackId: id,
+            sensorPackName: name,
+            sensorPackStock: stock,
+            sensorPackPrice: price
+        });
     };
 
     // ---------------------------------------------------------------------- //
@@ -119,7 +124,7 @@ const InventoryScreen = () => {
                 {inventory.map((sensorPack, index) => (
                     <RNBounceable key={sensorPack.id} style={[ styles.itemContainer, { backgroundColor: themePallete.background } ]}
                         onPress={() => {
-                            addInventory(sensorPack.sensorPackTypeId, sensorPack.stock, showSensorPackPrice(sensorPack.sensorPackTypeId))
+                            addInventory(sensorPack.sensorPackTypeId, showSensorPackName(sensorPack.sensorPackTypeId), sensorPack.stock, showSensorPackPrice(sensorPack.sensorPackTypeId))
                         }}>
 
                         {/* Índice de usuario */}

@@ -21,7 +21,7 @@ const AddInventoryScreen = () => {
     const route = useRoute();
     const navigation = useNavigation();
     const { themePallete } = useTheme();
-    const { sensorPackId, sensorPackStock, sensorPackPrice } = route.params;
+    const { sensorPackId, sensorPackName, sensorPackStock, sensorPackPrice } = route.params;
 
     const [ newStockAndPrice, setNewStockAndPrice ] = useState({
         newStock: sensorPackStock,
@@ -33,8 +33,8 @@ const AddInventoryScreen = () => {
 
     // ---------------------------------------------------------------------- //
 
-    const handleInspection = async () => {
-        navigation.navigate('SensorPacks');
+    const handleInspection = async (id, name) => {
+        navigation.navigate('SensorPacks', { ID: id, Name: name });
     };
 
     const handleSaveChanges = async () => {
@@ -87,7 +87,7 @@ const AddInventoryScreen = () => {
 
             {/* BOTONES */}
             <View style={styles.buttonContainer}>
-                <RNBounceable onPress={() => { handleInspection(); } } disabled={isLoading}
+                <RNBounceable onPress={() => { handleInspection(sensorPackId, sensorPackName); } } disabled={isLoading}
                     style={[ styles.saveButton, { backgroundColor: isLoading ? COLORS.disabled : COLORS.accent } ]} >
                     {isLoading ? (
                         <Flow size={SIZES.xLarge} color={COLORS.light} />
