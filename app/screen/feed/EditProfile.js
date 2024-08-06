@@ -7,6 +7,7 @@ import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 import { useUser } from '../../../core/auth/UserProvider';
 
+import Toast from 'react-native-toast-message';
 import React, { useState, useEffect } from 'react';
 import { Flow } from 'react-native-animated-spinkit';
 import { StyleSheet, View, Text } from 'react-native';
@@ -44,10 +45,24 @@ const EditProfileScreen = () => {
                     const data = await response.json();
                     setUserData(data);
                 } else {
-                    console.error('ERROR: Ha ocurrido un error al intentar cargar los datos del usuario.');
+                    Toast.show({
+                        type: 'error',
+                        text1: 'ERROR',
+                        text2: 'Ha ocurrido un error al intentar cargar los datos del usuario.',
+                        visibilityTime: 4500,
+                    })
+
+                    // console.error('ERROR: Ha ocurrido un error al intentar cargar los datos del usuario.');
                 }
             } catch (error) {
-                console.error('ERROR: No se pudieron cargar los datos del usuario.', error);
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'No se pudieron cargar los datos del usuario.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('ERROR: No se pudieron cargar los datos del usuario.', error);
             }
         };
 
@@ -73,13 +88,34 @@ const EditProfileScreen = () => {
             });
 
             if (response.ok) {
-                console.log('Se han actualizado los datos del usuario.');
+                Toast.show({
+                    type: 'success',
+                    text1: 'ACTUALIZADO',
+                    text2: 'Datos actualizados con éxito.',
+                    visibilityTime: 4500,
+                })
+
+                // console.log('Se han actualizado los datos del usuario.');
                 navigation.goBack();
             } else {
-                console.error('ERROR: Ha ocurrido un error al intentar actualizar los datos del usuario.');
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar actualizar los datos del usuario.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('ERROR: Ha ocurrido un error al intentar actualizar los datos del usuario.');
             }
         } catch (error) {
-            console.error('ERROR: Ocurrió un problema al intentar actualizar los datos del usuario.', error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'No se pudieron actualizar los datos del usuario.',
+                visibilityTime: 4500,
+            })
+
+            // console.error('ERROR: Ocurrió un problema al intentar actualizar los datos del usuario.', error);
         } finally {
             setIsLoading(false);
         }

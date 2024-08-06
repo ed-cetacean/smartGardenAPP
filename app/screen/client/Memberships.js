@@ -8,6 +8,7 @@ import { useTheme } from '../../../ui/ThemeProvider';
 import { useUser } from '../../../core/auth/UserProvider';
 import { handleIntegrationMP } from '../../../core/payment/IntegrationMP';
 
+import Toast from 'react-native-toast-message';
 import React, { useEffect, useState } from 'react';
 import { openBrowserAsync } from 'expo-web-browser';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -82,13 +83,35 @@ const MembershipScreen = () => {
             });
 
             if (response.ok) {
-                console.log('Membresía adquirida con éxito.');
+                Toast.show({
+                    type: 'success',
+                    text1: 'Compra realizada.',
+                    text2: 'Membresia adquirida con exito.',
+                    visibilityTime: 4500,
+                })
+
+
+                // console.log('Membresía adquirida con éxito.');
                 navigation.navigate('Memberships');
             } else {
-                console.error('Ha ocurrido un error al intentar adquirir la membresía.');
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar adquirir la membresía.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('Ha ocurrido un error al intentar adquirir la membresía.');
             }
         } catch (error) {
-            console.error('No se pudo adquirir la membresía.', error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'No se pudo adquirir la membresía.',
+                visibilityTime: 4500,
+            })
+
+            // console.error('No se pudo adquirir la membresía.', error);
         }
 
     };
@@ -100,7 +123,14 @@ const MembershipScreen = () => {
             openBrowserAsync(data);
             insertPayment(id);
         } else {
-            console.error('No se pudo realizar la compra de la membresía.');
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'No se pudo realizar la compra de la membresía.',
+                visibilityTime: 4500,
+            })
+
+            // console.error('No se pudo realizar la compra de la membresía.');
         }
     };
 

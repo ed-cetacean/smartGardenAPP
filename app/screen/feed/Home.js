@@ -8,6 +8,7 @@ import { useUser } from '../../../core/auth/UserProvider';
 import { PerenualMain, PerenualToken } from '../../../api/Config';
 
 import React, { useState } from 'react';
+import Toast from 'react-native-toast-message';
 import { Flow } from 'react-native-animated-spinkit';
 import { useNavigation } from '@react-navigation/native';
 import RNBounceable from '@freakycoder/react-native-bounceable';
@@ -39,7 +40,14 @@ const HomeScreen = () => {
             const data = await response.json();
             setPlants(data.data);
         } catch (error) {
-            console.error(error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'No se pudieron cargar los datos de las plantas.',
+                visibilityTime: 4500,
+            })
+
+            // console.error(error);
         } finally {
             setLoading(false);
         }

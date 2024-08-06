@@ -5,6 +5,7 @@ import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 import { useUser } from '../../../core/auth/UserProvider';
 
+import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
 import RNBounceable from '@freakycoder/react-native-bounceable';
 import React, { useEffect, useState, useCallback } from 'react';
@@ -33,10 +34,24 @@ const PaymentScreen = () => {
                 const data = await response.json();
                 setUserPayments(data);
             } else {
-                console.error('ERROR: Ha ocurrido un error al intentar cargar las facturas del usuario.');
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar cargar las facturas del usuario.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('ERROR: Ha ocurrido un error al intentar cargar las facturas del usuario.');
             }
         } catch (error) {
-            console.error('ERROR: No se pudieron cargar las facturas del usuario.', error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'No se pudieron cargar las facturas del usuario.',
+                visibilityTime: 4500,
+            })
+
+            // console.error('ERROR: No se pudieron cargar las facturas del usuario.', error);
         }
     };
 

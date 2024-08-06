@@ -8,7 +8,7 @@ import { useTheme } from '../../../ui/ThemeProvider';
 import { useUser } from '../../../core/auth/UserProvider';
 
 import { AntDesign } from '@expo/vector-icons';
-import { Swing } from 'react-native-animated-spinkit';
+import Toast from 'react-native-toast-message';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Carousel } from 'react-native-basic-carousel';
 import { useNavigation } from '@react-navigation/native';
@@ -48,10 +48,24 @@ const GardensScreen = () => {
                     const data = await response.json();
                     setUserGardens(data);
                 } else {
-                    console.error('ERROR: Ha ocurrido un error al intentar cargar los jardines del usuario.');
+                    Toast.show({
+                        type: 'error',
+                        text1: 'ERROR',
+                        text2: 'Ha ocurrido un error al intentar cargar los jardines.',
+                        visibilityTime: 4500,
+                    })
+
+                    // console.error('ERROR: Ha ocurrido un error al intentar cargar los jardines del usuario.');
                 }
             } catch (error) {
-                console.error('ERROR: No se pudieron cargar los jardines del usuario.', error);
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'No se pudieron cargar los jardines.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('ERROR: No se pudieron cargar los jardines del usuario.', error);
             }
         };
 
@@ -75,13 +89,33 @@ const GardensScreen = () => {
             });
 
             if (response.ok) {
-                console.log('Jardín eliminado con éxito');
+                Toast.show({
+                    type: 'success',
+                    text1: 'ELIMINADO',
+                    text2: 'Se ha eliminado el jardín.',
+                    visibilityTime: 4500,
+                })
+
+                // console.log('Jardín eliminado con éxito');
                 navigation.navigate('Gardens');
             } else {
-                console.error('ERROR: Ha ocurrido un error al intentar eliminar el jardín.');
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar eliminar el jardín.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('ERROR: Ha ocurrido un error al intentar eliminar el jardín.');
             }
         } catch (error) {
-            console.error('ERROR: No se pudo eliminar el jardín.', error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'No se pudo eliminar el jardín.',
+                visibilityTime: 4500,
+            })
+            // console.error('ERROR: No se pudo eliminar el jardín.', error);
         } finally {
             setIsDeleting(false);
             bottomSheetRef.current?.close();

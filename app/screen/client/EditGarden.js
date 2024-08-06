@@ -6,6 +6,7 @@ import InputCW from '../../../components/Input';
 import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 
+import Toast from 'react-native-toast-message';
 import React, { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { StyleSheet, View, Text } from 'react-native';
@@ -49,10 +50,24 @@ const EditGardenScreen = () => {
                     const data = await response.json();
                     setGardenData(data);
                 } else {
-                    console.error('ERROR: Ha ocurrido un error al intentar cargar los datos del usuario.');
+                    Toast.show({
+                        type: 'error',
+                        text1: 'ERROR',
+                        text2: 'Ha ocurrido un error al intentar cargar los datos del jardín.',
+                        visibilityTime: 4500,
+                    })
+
+                    // console.error('ERROR: Ha ocurrido un error al intentar cargar los datos del usuario.');
                 }
             } catch (error) {
-                console.error('ERROR: No se pudieron cargar los datos del usuario.', error);
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'No se puderon cargar los datos del jardín.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('ERROR: No se pudieron cargar los datos del usuario.', error);
             } finally {
                 setFetchLoading(false);
             }
@@ -81,13 +96,34 @@ const EditGardenScreen = () => {
             });
 
             if (response.ok) {
-                console.log('Se han actualizado los datos del jardín.');
+                Toast.show({
+                    type: 'success',
+                    text1: 'ACTUALIZADO',
+                    text2: 'Se han actualizado los datos del jardín.',
+                    visibilityTime: 4500,
+                })
+
+                // console.log('Se han actualizado los datos del jardín.');
                 navigation.navigate('Gardens');
             } else {
-                console.error('ERROR: Ha ocurrido un error al intentar actualizar los datos del jardín.');
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar actualizar los datos del jardín.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('ERROR: Ha ocurrido un error al intentar actualizar los datos del jardín.');
             }
         } catch (error) {
-            console.error('ERROR: Ocurrió un problema al intentar actualizar los datos del jardín.', error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'Ocurrio un problema al intentar actualizar los datos del jardín.',
+                visibilityTime: 4500,
+            })
+
+            // console.error('ERROR: Ocurrió un problema al intentar actualizar los datos del jardín.', error);
         } finally {
             setIsLoading(false);
         }

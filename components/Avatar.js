@@ -1,8 +1,6 @@
 
 // -------------------------------------------------------------------------- //
 
-import { COLORS } from '../ui/Styles';
-
 import React from 'react';
 import { Text } from 'react-native';
 

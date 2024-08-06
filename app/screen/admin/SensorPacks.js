@@ -5,6 +5,7 @@ import { MainSG } from '../../../api/Config';
 import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 
+import Toast from 'react-native-toast-message';
 import React, { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { Swing } from 'react-native-animated-spinkit';
@@ -35,14 +36,28 @@ const SensorPackScreen = () => {
             if (response.ok) {
                 const data = await response.json();
                 setSensorPacks(data);
-                console.log('Paquetes de sensores recuperados con éxito.');
+                // console.log('Paquetes de sensores recuperados con éxito.');
 
                 fetchUsers();
             } else {
-                console.error('Ha ocurrido un error al intentar recuperar los paquetes de sensores.');
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar recuperar los paquetes de sensores.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('Ha ocurrido un error al intentar recuperar los paquetes de sensores.');
             }
         } catch (error) {
-            console.error('No se pudieron recuperar los paquetes de sensores.', error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'No se pudieron recuperar los paquetes de sensores.',
+                visibilityTime: 4500,
+            })
+
+            // console.error('No se pudieron recuperar los paquetes de sensores.', error);
         } finally {
             setLoading(false);
         }
@@ -58,12 +73,26 @@ const SensorPackScreen = () => {
                 const data = await response.json();
                 setUsers(data);
 
-                console.log('Usuarios recuperados con éxito.');
+                // console.log('Usuarios recuperados con éxito.');
             } else {
-                console.error('ERROR: Ha ocurrido un error al intentar recuperar los usuarios.');
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar recuperar los usuarios.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('ERROR: Ha ocurrido un error al intentar recuperar los usuarios.');
             }
         } catch (error) {
-            console.error('ERROR: No se pudo recuperar los usuarios.', error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'No se pudo recuperar los usuarios.',
+                visibilityTime: 4500,
+            })
+
+            // console.error('ERROR: No se pudo recuperar los usuarios.', error);
         }
     };
 

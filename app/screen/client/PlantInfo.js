@@ -4,6 +4,7 @@ import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 import { PerenualMain, PerenualToken } from '../../../api/Config';
 
+import Toast from 'react-native-toast-message';
 import React, { useEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { Flow } from 'react-native-animated-spinkit';
@@ -29,7 +30,14 @@ const PlantInfoScreen = () => {
                 const result = await response.json();
                 setData(result);
             } catch (error) {
-                console.error(error);
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar recuperar la información de la planta.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error(error);
             } finally {
                 setLoading(false);
             }

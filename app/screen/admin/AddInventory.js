@@ -7,6 +7,7 @@ import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 
 import React, { useState } from 'react';
+import Toast from 'react-native-toast-message';
 import { useRoute } from '@react-navigation/native';
 import { Flow } from 'react-native-animated-spinkit';
 import InputSpinner from 'react-native-input-spinner';
@@ -47,13 +48,34 @@ const AddInventoryScreen = () => {
             });
 
             if (response.ok) {
-                console.log('Se ha actualizado el inventario.');
+                Toast.show({
+                    type: 'success',
+                    text1: 'ACTUALIZADO',
+                    text2: 'Se ha actualizado el inventario.',
+                    visibilityTime: 4500,
+                })
+
+                //console.log('Se ha actualizado el inventario.');
                 navigation.navigate('Inventory');
             } else {
-                console.error('Ha ocurrido un error al intentar actualizar el inventario.');
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar actualizar el inventario.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('Ha ocurrido un error al intentar actualizar el inventario.');
             }
         } catch (error) {
-            console.error('No se puddo actualizar el inventario.', error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'No se pudo actualizar el inventario.',
+                visibilityTime: 4500,
+            })
+
+            // console.error('No se puddo actualizar el inventario.', error);
         } finally {
             setIsLoading(false);
         }

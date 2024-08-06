@@ -5,7 +5,7 @@ const COLORS = { // https://uicolors.app/create
     dark: '#2A313B',
     light: '#F1EFF2',
 
-    red: '#C4DFFA',
+    red: '#B22B27',
     blue: '#C4DFFA',
     green: '#ABD1B5',
     yellow: '#FFE078',

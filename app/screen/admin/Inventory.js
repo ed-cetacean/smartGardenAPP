@@ -5,6 +5,7 @@ import { MainSG } from '../../../api/Config';
 import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 
+import Toast from 'react-native-toast-message';
 import React, { useState, useEffect } from 'react';
 import { Swing } from 'react-native-animated-spinkit';
 import { useNavigation } from '@react-navigation/native';
@@ -32,14 +33,28 @@ const InventoryScreen = () => {
             if (response.ok) {
                 const data = await response.json();
                 setInventory(data);
-                console.log('Inventario recuperado con éxito.');
+                // console.log('Inventario recuperado con éxito.');
 
                 fetchSensorPackType();
             } else {
-                console.error('ERROR: Ha ocurrido un error al intentar recuperar el inventario.');
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar recuperar el inventario.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('ERROR: Ha ocurrido un error al intentar recuperar el inventario.');
             }
         } catch (error) {
-            console.error('ERROR: No se pudo recuperar el inventario.', error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'No se pudo recuperar el inventario.',
+                visibilityTime: 4500,
+            })
+
+            // console.error('ERROR: No se pudo recuperar el inventario.', error);
         } finally {
             setLoading(false);
         }
@@ -55,12 +70,26 @@ const InventoryScreen = () => {
                 const data = await response.json();
                 setSensorPackType(data);
 
-                console.log('Tipos de SensorPack recuperado con éxito.');
+                // console.log('Tipos de SensorPack recuperado con éxito.');
             } else {
-                console.error('ERROR: Ha ocurrido un error al intentar recuperar lost tipos de SensorPack.');
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar recuperar los tipos de SensorPack.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('ERROR: Ha ocurrido un error al intentar recuperar lost tipos de SensorPack.');
             }
         } catch (error) {
-            console.error('ERROR: No se pudo recuperar los tipos de SensorPack.', error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'No se pudo recuperar los tipos de SensorPack.',
+                visibilityTime: 4500,
+            })
+
+            // console.error('ERROR: No se pudo recuperar los tipos de SensorPack.', error);
         }
     };
 

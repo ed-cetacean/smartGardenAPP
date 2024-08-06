@@ -8,6 +8,7 @@ import { useTheme } from '../../../ui/ThemeProvider';
 import { useUser } from '../../../core/auth/UserProvider';
 
 import React, { useState } from 'react';
+import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
 import RNBounceable from '@freakycoder/react-native-bounceable';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
@@ -51,6 +52,13 @@ const LoginScreen = () => {
             if (response.ok) {
                 await updateUser(data);
 
+                Toast.show({
+                    type: 'success',
+                    text1: 'INICIO DE SESIÓN',
+                    text2: 'Ha iniciado sesión con éxito.',
+                    visibilityTime: 4500,
+                })
+
                 if (data.role === 'client') {
                     navigation.reset({
                         index: 0,
@@ -64,11 +72,25 @@ const LoginScreen = () => {
                 }
 
             } else {
-                console.error(data.message);
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: data.message,
+                    visibilityTime: 4500,
+                })
+
+                // console.error(data.message);
             }
 
         } catch (error) {
-            console.error(error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'No se pudo iniciar sesión.',
+                visibilityTime: 4500,
+            })
+
+            // console.error(error);
         } finally {
             setIsLoading(false); // Finaliza el estado de carga.
         }

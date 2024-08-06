@@ -6,6 +6,7 @@ import InputCW from '../../../components/Input';
 import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 
+import Toast from 'react-native-toast-message';
 import React, { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { Flow } from 'react-native-animated-spinkit';
@@ -45,10 +46,24 @@ const UserInfoScreen = () => {
                     const data = await response.json();
                     setUserData(data);
                 } else {
-                    console.error('ERROR: Ha ocurrido un error al intentar cargar los datos del usuario.');
+                    Toast.show({
+                        type: 'error',
+                        text1: 'ERROR',
+                        text2: 'Ha ocurrido un error al intentar cargar los datos del usuario.',
+                        visibilityTime: 4500,
+                    })
+
+                    // console.error('ERROR: Ha ocurrido un error al intentar cargar los datos del usuario.');
                 }
             } catch (error) {
-                console.error('ERROR: No se pudieron cargar los datos del usuario.', error);
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'No se pudieron cargar los datos del usuario.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('ERROR: No se pudieron cargar los datos del usuario.', error);
             }
         };
 
@@ -73,13 +88,34 @@ const UserInfoScreen = () => {
             });
 
             if (response.ok) {
-                console.log('Se han actualizado los datos del usuario.');
+                Toast.show({
+                    type: 'success',
+                    text1: 'ACTUALIZADO',
+                    text2: 'Se han actualizado los datos del usuario.',
+                    visibilityTime: 4500,
+                })
+
+                // console.log('Se han actualizado los datos del usuario.');
                 navigation.navigate('Users');
             } else {
-                console.error('ERROR: Ha ocurrido un error al intentar actualizar los datos del usuario.');
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar actualizar los datos del usuario.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('ERROR: Ha ocurrido un error al intentar actualizar los datos del usuario.');
             }
         } catch (error) {
-            console.error('ERROR: Ocurrió un problema al intentar actualizar los datos del usuario.', error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'Ocurrio un problema al intentar actualizar los datos del usuario.',
+                visibilityTime: 4500,
+            })
+
+            // console.error('ERROR: Ocurrió un problema al intentar actualizar los datos del usuario.', error);
         } finally {
             setIsLoading(false);
         }
@@ -96,13 +132,34 @@ const UserInfoScreen = () => {
             });
 
             if (response.ok) {
-                console.log('Se ha eliminado el usuario.');
+                Toast.show({
+                    type: 'success',
+                    text1: 'ELIMINADO',
+                    text2: 'Se ha eliminado el usuario.',
+                    visibilityTime: 4500,
+                })
+
+                // console.log('Se ha eliminado el usuario.');
                 navigation.navigate('Users');
             } else {
-                console.error('ERROR: Ha ocurrido un error al intentar eliminar el usuario.');
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar eliminar el usuario.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('ERROR: Ha ocurrido un error al intentar eliminar el usuario.');
             }
         } catch (error) {
-            console.error('ERROR: Ocurrio un problema al intentar eliminar el usuario.', error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'Ocurrio un problema al intentar eliminar el usuario.',
+                visibilityTime: 4500,
+            })
+
+            // console.error('ERROR: Ocurrio un problema al intentar eliminar el usuario.', error);
         } finally {
             setIsLoading(false);
         }

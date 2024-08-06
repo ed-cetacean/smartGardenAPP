@@ -7,6 +7,7 @@ import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 import { useUser } from '../../../core/auth/UserProvider';
 
+import Toast from 'react-native-toast-message';
 import React, { useState, useEffect } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import { Flow } from 'react-native-animated-spinkit';
@@ -49,10 +50,24 @@ const CreateGardenScreen = () => {
                     const data = await response.json();
                     setUserSensors(data);
                 } else {
-                    console.error('ERROR: Ha ocurrido un error al intentar cargar los paquetes de sensores.');
+                    Toast.show({
+                        type: 'error',
+                        text1: 'ERROR',
+                        text2: 'Ha ocurrido un error al intentar cargar los paquetes de sensores.',
+                        visibilityTime: 4500,
+                    })
+
+                    // console.error('ERROR: Ha ocurrido un error al intentar cargar los paquetes de sensores.');
                 }
             } catch (error) {
-                console.error('ERROR: No se pudieron cargar los paquetes de sensores.', error);
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'No se pudieron cargar los paquetes de sensores.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('ERROR: No se pudieron cargar los paquetes de sensores.', error);
             } finally {
                 setIsLoading(false);
             }
@@ -84,13 +99,34 @@ const CreateGardenScreen = () => {
             });
 
             if (response.ok) {
-                console.log('Jardín creado con éxito');
+                Toast.show({
+                    type: 'success',
+                    text1: 'REGISTRADO',
+                    text2: 'Jardín creado con éxito.',
+                    visibilityTime: 4500,
+                })
+
+                // console.log('Jardín creado con éxito');
                 navigation.navigate('Gardens');
             } else {
-                console.error('ERROR: Ha ocurrido un error al intentar crear el jardín.');
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar crear el jardín.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('ERROR: Ha ocurrido un error al intentar crear el jardín.');
             }
         } catch (error) {
-            console.error('ERROR: Ocurrió un problema al intentar crear el jardín.', error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'Ocurrio un problema al intentar crear el jardín.',
+                visibilityTime: 4500,
+            })
+
+            // console.error('ERROR: Ocurrió un problema al intentar crear el jardín.', error);
         } finally {
             setIsSaving(false);
         }

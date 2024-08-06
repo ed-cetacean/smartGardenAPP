@@ -8,6 +8,7 @@ import { useTheme } from '../../../ui/ThemeProvider';
 import { useUser } from '../../../core/auth/UserProvider';
 import { handleIntegrationMP } from '../../../core/payment/IntegrationMP';
 
+import Toast from 'react-native-toast-message';
 import React, { useEffect, useState } from 'react';
 import { openBrowserAsync } from 'expo-web-browser';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -41,12 +42,26 @@ const ShoppingScreen = () => {
             if (response.ok) {
                 const data = await response.json();
                 setProducts(data);
-                console.log('Liista de productos obtenida.');
             } else {
-                console.error('Ha ocurrido un error al intentar carar la lista de productos.');
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar carar la lista de productos.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('Ha ocurrido un error al intentar carar la lista de productos.');
             }
         } catch (error) {
-            console.error('No se pudo cargar la lista de productos.', error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'No se pudo cargar la lista de productos.',
+                visibilityTime: 4500,
+            })
+
+
+            // console.error('No se pudo cargar la lista de productos.', error);
         } finally {
             setLoading(false);
         }
@@ -89,13 +104,34 @@ const ShoppingScreen = () => {
 
 
             if (response.ok) {
-                console.log('Compra realizada con éxito.');
+                Toast.show({
+                    type: 'success',
+                    text1: 'COMPRA REALIZADA',
+                    text2: 'Paquete de sensores adquirido.',
+                    visibilityTime: 4500,
+                })
+
+                // console.log('Compra realizada con éxito.');
                 navigation.navigate('Shopping');
             } else {
-                console.error('Ha ocurrido un error al intentar realizar la compra.');
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar realizar la compra.',
+                    visibilityTime: 4500,
+                })
+
+                // console.error('Ha ocurrido un error al intentar realizar la compra.');
             }
         } catch (error) {
-            console.error('No se pudo reaalizar la compra.', error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'No se pudo realizar la compra.',
+                visibilityTime: 4500,
+            })
+
+            // console.error('No se pudo reaalizar la compra.', error);
         }
 
     };

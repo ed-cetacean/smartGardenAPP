@@ -1,6 +1,7 @@
 
 // -------------------------------------------------------------------------- //
 
+import Toast from "react-native-toast-message";
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useContext, useEffect, useState } from 'react';
@@ -22,7 +23,14 @@ export const UserProvider = ({ children }) => {
             await AsyncStorage.setItem('userData', JSON.stringify(userData));
             setUser(userData);
         } catch (error) {
-            console.error("ERROR: Hubo un problema al intentar actualizar el usuario: ", error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'Ha ocurrido un error al intentar actualizar el usuario.',
+                visibilityTime: 4500,
+            })
+
+            // console.error("ERROR: Hubo un problema al intentar actualizar el usuario: ", error);
         }
 
     };
@@ -34,7 +42,14 @@ export const UserProvider = ({ children }) => {
             await AsyncStorage.removeItem('userData'); setUser(null);
             navigation.reset({ index: 0, routes: [{ name: 'Start' }] });
         } catch (error) {
-            console.error("ERROR: Hubo un problema al intentar cerrar la sesión: ", error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'Ha ocurrido un error al intentar cerrar la sesión.',
+                visibilityTime: 4500,
+            })
+
+            // console.error("ERROR: Hubo un problema al intentar cerrar la sesión: ", error);
         }
 
     };
@@ -49,7 +64,14 @@ export const UserProvider = ({ children }) => {
                 setUser(userData);
             }
         } catch (error) {
-            console.error("ERROR: Ha ocurrido un error al cargar los datos del usuario: ", error);
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'Ha ocurrido un error al intentar cargar los datos del usuario.',
+                visibilityTime: 4500,
+            })
+
+            // console.error("ERROR: Ha ocurrido un error al cargar los datos del usuario: ", error);
         }
     };
 

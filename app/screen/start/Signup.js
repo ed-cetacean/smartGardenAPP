@@ -7,6 +7,7 @@ import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 
 import React, { useState } from 'react';
+import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
 import RNBounceable from '@freakycoder/react-native-bounceable';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
@@ -56,13 +57,33 @@ const SignupScreen = () => {
             });
 
             if (response.ok) {
-                console.log('Signup successful');
+                Toast.show({
+                    type: 'success',
+                    text1: 'REGISTRO',
+                    text2: 'Usuario creado con exito.',
+                    visibilityTime: 4500,
+                })
+
+                // console.log('Signup successful');
                 navigation.goBack();
             } else {
-                console.log('ERROR: ', response.message);
+                // console.log('ERROR: ', response.message);
+                Toast.show({
+                    type: 'error',
+                    text1: 'ERROR',
+                    text2: 'Ha ocurrido un error al intentar crear al usuario.',
+                    visibilityTime: 4500,
+                })
             }
         } catch (error) {
-            console.error('ERROR: Hubo un error al intentar conectar con el servidor.');
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'No se pudo crear un nuevo usuario.',
+                visibilityTime: 4500,
+            })
+
+            // console.error('ERROR: Hubo un error al intentar conectar con el servidor.');
         } finally {
             setIsLoading(false);
         }

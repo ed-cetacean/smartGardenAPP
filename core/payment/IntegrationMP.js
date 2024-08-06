@@ -3,6 +3,8 @@
 
 import { MainMP, TokenSG } from '../../api/Config';
 
+import Toast from 'react-native-toast-message';
+
 // -------------------------------------------------------------------------- //
 
 export const handleIntegrationMP = async (name, description, price, type) => {
@@ -38,11 +40,25 @@ export const handleIntegrationMP = async (name, description, price, type) => {
             return data.init_point;
 
         } else {
-            console.error('Ha ocurrido un error con los datos de compra.');
+            Toast.show({
+                type: 'error',
+                text1: 'ERROR',
+                text2: 'Ha ocurrido un error con los datos de compra.',
+                visibilityTime: 4500,
+            })
+
+            // console.error('Ha ocurrido un error con los datos de compra.');
         }
 
     } catch (error) {
-        console.error('No se pudo realizar la compra: ', error);
+        Toast.show({
+            type: 'error',
+            text1: 'ERROR',
+            text2: 'No se pudo realizar la compra.',
+            visibilityTime: 4500,
+        })
+
+        // console.error('No se pudo realizar la compra: ', error);
     }
 
 };
