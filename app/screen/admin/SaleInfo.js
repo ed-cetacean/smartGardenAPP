@@ -1,112 +1,20 @@
 
 // -------------------------------------------------------------------------- //
 
-import { MainSG } from '../../../api/Config';
-import InputCW from '../../../components/Input';
 import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useRoute } from '@react-navigation/native';
-import { Flow } from 'react-native-animated-spinkit';
 import { StyleSheet, View, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import RNBounceable from '@freakycoder/react-native-bounceable';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
 // -------------------------------------------------------------------------- //
 
 const SalesInfoScreen = () => {
     const route = useRoute();
-    const { userId } = route.params;
-    const navigation = useNavigation();
+    const { purchaseDate, totalPrice, clientName, sensorPackName, saleId } = route.params;
     const { themePallete } = useTheme();
-
-    const [ userData, setUserData ] = useState({
-        email: '', firstName: '', lastName: '',
-        street: '', zip: '', city: '', state: '', country: ''
-    });
-
-    const isDisabled = userData.email.trim() === '' || userData.firstName.trim() === '' || userData.lastName.trim() === '' ||
-        userData.street.trim() === '' || userData.zip.trim() === '' || userData.city.trim() === '' || userData.state.trim() === '' || userData.country.trim() === '';
-
-    const [ isLoading, setIsLoading ] = useState(false);
-
-    // ---------------------------------------------------------------------- //
-
-    useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const response = await fetch(`${MainSG}Usuario/${userId}`, {
-                    method: 'GET', headers: { 'Content-Type': 'application/json' }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setUserData(data);
-                } else {
-                    console.error('ERROR: Ha ocurrido un error al intentar cargar los datos del usuario.');
-                }
-            } catch (error) {
-                console.error('ERROR: No se pudieron cargar los datos del usuario.', error);
-            }
-        };
-
-        fetchUserData();
-    }, []);
-
-    // ---------------------------------------------------------------------- //
-
-    const handleChange = (field, value) => {
-        setUserData({ ...userData, [field]: value });
-    };
-
-    // ---------------------------------------------------------------------- //
-
-    const handleSaveChanges = async () => {
-        setIsLoading(true);
-
-        try {
-            const response = await fetch(`${MainSG}Usuario/${userId}`, {
-                method: 'PUT', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userData)
-            });
-
-            if (response.ok) {
-                console.log('Se han actualizado los datos del usuario.');
-                navigation.navigate('Users');
-            } else {
-                console.error('ERROR: Ha ocurrido un error al intentar actualizar los datos del usuario.');
-            }
-        } catch (error) {
-            console.error('ERROR: Ocurrió un problema al intentar actualizar los datos del usuario.', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    // ---------------------------------------------------------------------- //
-
-    const handleDeleteUser = async () => {
-        try {
-            setIsLoading(true);
-            const response = await fetch(`${MainSG}Usuario/${userId}`, {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' }
-            });
-
-            if (response.ok) {
-                console.log('Se ha eliminado el usuario.');
-                navigation.navigate('Users');
-            } else {
-                console.error('ERROR: Ha ocurrido un error al intentar eliminar el usuario.');
-            }
-        } catch (error) {
-            console.error('ERROR: Ocurrio un problema al intentar eliminar el usuario.', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
 
     // ---------------------------------------------------------------------- //
 
@@ -115,119 +23,66 @@ const SalesInfoScreen = () => {
 
             {/* TITULO */}
             <View style={styles.titleContainer}>
-                <Text style={styles.titleText}>ADMINISTRAR USUARIO</Text>
+                <Text style={styles.titleText}>INFORMACIÓN DE VENTA</Text>
             </View>
 
-            <InputCW
-                placeholder='Correo electrónico'
-                value={userData.email}
-                onChangeText={(text) => handleChange('email', text)}
-                leftIcon={<Icon name='at' size={SIZES.xLarge} color={COLORS.accent} />}
-                autoCapitalize='none'
-                inputMode='email'
-                maxLength={64}
-            />
+            {/* ID DE VENTA */}
+            <View style={styles.infoContainer}>
+                <Icon name='identifier' style={styles.infoIcon} size={SIZES.xLarge} color={COLORS.accent} />
+                <Text style={[styles.infoText, { color: themePallete.text }]}>ID DE VENTA: </Text>
+                <Text style={[styles.infoAltText, { color: themePallete.text }]}>{saleId}</Text>
+            </View>
 
-            <InputCW
-                placeholder='Nombres'
-                value={userData.firstName}
-                onChangeText={(text) => handleChange('firstName', text)}
-                leftIcon={<Icon name='account' size={SIZES.xLarge} color={COLORS.accent} />}
-                autoCapitalize='words'
-                maxLength={64}
-            />
+            {/* NOMBRE DEL CLIENTE */}
+            <View style={styles.infoContainer}>
+                <Icon name='account' style={styles.infoIcon} size={SIZES.large} color={COLORS.accent} />
+                <Text style={[styles.infoText, { color: themePallete.text }]}>CLIENTE: </Text>
+                <Text style={[styles.infoAltText, { color: themePallete.text }]}>{clientName}</Text>
+            </View>
 
-            <InputCW
-                placeholder='Apellidos'
-                value={userData.lastName}
-                onChangeText={(text) => handleChange('lastName', text)}
-                leftIcon={<Icon name='account' size={SIZES.xLarge} color={COLORS.accent} />}
-                autoCapitalize='words'
-                maxLength={128}
-            />
+            {/* PRODUCTO */}
+            <View style={styles.infoContainer}>
+                <Icon name='shopping-outline' style={styles.infoIcon} size={SIZES.large} color={COLORS.accent} />
+                <Text style={[styles.infoText, { color: themePallete.text }]}>PRODUCTO: </Text>
+                <Text style={[styles.infoAltText, { color: themePallete.text }]}>{sensorPackName}</Text>
+            </View>
 
-            <InputCW
-                placeholder='Calle'
-                value={userData.street}
-                onChangeText={(text) => handleChange('street', text)}
-                leftIcon={<Icon name='road' size={SIZES.xLarge} color={COLORS.accent} />}
-                autoCapitalize='words'
-                maxLength={64}
-            />
+            {/* FECHA DE COMPRA */}
+            <View style={styles.infoContainer}>
+                <Icon name='calendar' style={styles.infoIcon} size={SIZES.large} color={COLORS.accent} />
+                <Text style={[styles.infoText, { color: themePallete.text }]}>FECHA: </Text>
+                <Text style={[styles.infoAltText, { color: themePallete.text }]}>{new Date(purchaseDate).toLocaleString()}</Text>
+            </View>
 
-            <InputCW
-                placeholder='Código Postal'
-                value={userData.zip}
-                onChangeText={(text) => handleChange('zip', text)}
-                leftIcon={<Icon name='mailbox' size={SIZES.xLarge} color={COLORS.accent} />}
-                inputMode='numeric'
-                maxLength={5}
-            />
-
-            <InputCW
-                placeholder='Ciudad'
-                value={userData.city}
-                onChangeText={(text) => handleChange('city', text)}
-                leftIcon={<Icon name='city' size={SIZES.xLarge} color={COLORS.accent} />}
-                autoCapitalize='words'
-                maxLength={64}
-            />
-
-            <InputCW
-                placeholder='Estado'
-                value={userData.state}
-                onChangeText={(text) => handleChange('state', text)}
-                leftIcon={<Icon name='map' size={SIZES.xLarge} color={COLORS.accent} />}
-                autoCapitalize='words'
-                maxLength={64}
-            />
-
-            <InputCW
-                placeholder='País'
-                value={userData.country}
-                onChangeText={(text) => handleChange('country', text)}
-                leftIcon={<Icon name='earth' size={SIZES.xLarge} color={COLORS.accent} />}
-                autoCapitalize='words'
-                maxLength={64}
-            />
-
-            <View style={styles.buttonContainer}>
-                <RNBounceable onPress={() => { handleDeleteUser(); } } disabled={isLoading}
-                    style={[ styles.saveButton, { backgroundColor: isLoading ? COLORS.disabled : COLORS.accent } ]} >
-                    {isLoading ? (
-                        <Flow size={SIZES.xLarge} color={COLORS.light} />
-                    ) : (
-                        <Text style={[styles.saveText, { color: isLoading ? COLORS.alterDisabled : COLORS.disabled} ]}>ELIMINAR</Text>
-                    )}
-                </RNBounceable>
-
-                <RNBounceable onPress={() => { handleSaveChanges(); }} disabled={isLoading || isDisabled}
-                    style={[ styles.saveButton, { backgroundColor: isLoading || isDisabled ? COLORS.disabled : COLORS.accent } ]} >
-                    {isLoading ? (
-                        <Flow size={SIZES.xLarge} color={COLORS.light} />
-                    ) : (
-                        <Text style={[styles.saveText, { color: isLoading || isDisabled ? COLORS.alterDisabled : COLORS.disabled} ]}>GUARDAR</Text>
-                    )}
-                </RNBounceable>
+            {/* PRECIO TOTAL */}
+            <View style={styles.infoContainer}>
+                <Icon name='cash' style={styles.infoIcon} size={SIZES.xLarge} color={COLORS.accent} />
+                <Text style={[styles.infoText, { color: themePallete.text }]}>PRECIO: </Text>
+                <Text style={[styles.infoAltText, { color: themePallete.text }]}>$ {totalPrice}.00</Text>
             </View>
 
         </View>
     );
+
 };
 
 // -------------------------------------------------------------------------- //
 
 const styles = StyleSheet.create({
+
     mainContainer: {
         flex: 1,
-        padding: 40, paddingTop: 0,
+        alignItems: 'center',
+        padding: 20,
     },
 
     // ---------------------------------------------------------------------- //
 
     titleContainer: {
-        width: '100%', height: '10%',
-        alignItems: 'center', justifyContent: 'center',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 20,
     },
 
     titleText: {
@@ -238,26 +93,27 @@ const styles = StyleSheet.create({
 
     // ---------------------------------------------------------------------- //
 
-    saveButton: {
-        width: '48%',
-        padding: 15,
-        marginTop: 20,
-        borderRadius: 4,
-        alignItems: 'center',
-    },
-
-    saveText: {
-        fontWeight: 'bold',
-        fontSize: SIZES.medium,
-    },
-
-    // ---------------------------------------------------------------------- //
-
-    buttonContainer: {
+    infoContainer: {
+        paddingHorizontal: 20,
         width: '100%',
+        paddingVertical: 18,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+    },
+
+    infoIcon: {
+        width: 40,
+        paddingRight: 10,
+    },
+
+    infoText: {
+        fontWeight: 'bold',
+        fontSize: SIZES.xSmall + 2,
+    },
+
+    infoAltText: {
+        fontWeight: 'bold',
+        fontSize: SIZES.small + 1,
     },
 });
 

@@ -5,9 +5,9 @@ import { MainSG } from '../../../api/Config';
 import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 
+import React, { useState, useEffect } from 'react';
 import { Swing } from 'react-native-animated-spinkit';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect, useCallback } from 'react';
 import RNBounceable from '@freakycoder/react-native-bounceable';
 import { StyleSheet, ScrollView, RefreshControl, View, Text } from 'react-native';
 
@@ -17,11 +17,12 @@ const SalesScreen = () => {
     const navigation = useNavigation();
     const { themePallete } = useTheme();
 
-    const [users, setUsers] = useState([]);
-    const [ventas, setVentas] = useState([]);
-    const [sensorPacks, setSensorPacks] = useState([]);
-    const [sensorPackTypes, setSensorPackTypes] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [ users, setUsers ] = useState([]);
+    const [ ventas, setVentas ] = useState([]);
+    const [ sensorPacks, setSensorPacks ] = useState([]);
+    const [ sensorPackTypes, setSensorPackTypes ] = useState([]);
+
+    const [ loading, setLoading ] = useState(false);
 
     // ---------------------------------------------------------------------- //
 
@@ -130,7 +131,7 @@ const SalesScreen = () => {
         const sensorPack = sensorPacks.find(sp => sp.id === venta.sensorPackId);
         const sensorPackType = sensorPackTypes.find(spt => spt.id === (sensorPack ? sensorPack.sensorPackTypeId : null));
 
-        navigation.navigate('SaleInfo', {
+        navigation.navigate('SalesInfo', {
             purchaseDate: venta.purchaseDate,
             totalPrice: venta.totalPrice,
             clientName: user ? `${user.firstName} ${user.lastName}` : 'Desconocido',
