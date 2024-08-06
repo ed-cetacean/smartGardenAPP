@@ -22,6 +22,7 @@ import UserInfoScreen from './screen/admin/UserInfo';
 import SalesScreen from './screen/admin/Sales';
 import InventoryScreen from './screen/admin/Inventory';
 import AddInventoryScreen from './screen/admin/AddInventory';
+import SensorPacksScreen from './screen/admin/SensorPacks';
 
 // Client:
 import PlantInfoScreen from './screen/client/PlantInfo';
@@ -198,6 +199,7 @@ export function StackNav() {
             <Stack.Screen name='PaymentInfo' component={PaymentInfoScreen} />
             <Stack.Screen name='UserInfo' component={UserInfoScreen} />
             <Stack.Screen name='AddInventory' component={AddInventoryScreen} />
+            <Stack.Screen name='SensorPacks' component={SensorPacksScreen} />
 
             {/* Acceso directo al BottomNav: */}
             <Stack.Screen name='BottomNavClient' component={BottomNavClient} options={{ headerShown: false }} />

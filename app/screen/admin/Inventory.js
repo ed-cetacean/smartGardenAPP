@@ -5,9 +5,9 @@ import { MainSG } from '../../../api/Config';
 import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 
+import React, { useState, useEffect } from 'react';
 import { Swing } from 'react-native-animated-spinkit';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect, useCallback } from 'react';
 import RNBounceable from '@freakycoder/react-native-bounceable';
 import { StyleSheet, ScrollView, RefreshControl, View, Text } from 'react-native';
 

@@ -6,14 +6,14 @@ import InputCW from '../../../components/Input';
 import { COLORS, SIZES } from '../../../ui/Styles';
 import { useTheme } from '../../../ui/ThemeProvider';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRoute } from '@react-navigation/native';
-import { Flow, Swing } from 'react-native-animated-spinkit';
+import { Flow } from 'react-native-animated-spinkit';
 import InputSpinner from 'react-native-input-spinner';
 import { StyleSheet, View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import RNBounceable from '@freakycoder/react-native-bounceable';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
+import RNBounceable from '@freakycoder/react-native-bounceable';
 
 // -------------------------------------------------------------------------- //
 
@@ -34,7 +34,7 @@ const AddInventoryScreen = () => {
     // ---------------------------------------------------------------------- //
 
     const handleInspection = async () => {
-        console.log('...');
+        navigation.navigate('SensorPacks');
     };
 
     const handleSaveChanges = async () => {
