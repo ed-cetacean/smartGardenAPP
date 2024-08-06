@@ -26,27 +26,27 @@ const MembershipScreen = () => {
     const navigation = useNavigation();
     const { themePallete } = useTheme();
 
-    const [ products, setProducts ] = useState([]);
+    const [ memberships, setMemberships ] = useState([]);
     const [ loading, setLoading ] = useState(false);
 
     // ---------------------------------------------------------------------- //
 
-    const fetchProducts = async () => {
+    const fetchMemberships = async () => {
 
         try {
-            const response = await fetch(`${MainSG}SensorPackType`, {
+            const response = await fetch(`${MainSG}Membresia`, {
                 method: 'GET', headers: { 'Content-Type': 'application/json' }
             });
 
             if (response.ok) {
                 const data = await response.json();
-                setProducts(data);
-                console.log('Liista de productos obtenida.');
+                setMemberships(data);
+                console.log('Liista de membresias obtenida.');
             } else {
-                console.error('Ha ocurrido un error al intentar carar la lista de productos.');
+                console.error('Ha ocurrido un error al intentar carar la lista de membresías.');
             }
         } catch (error) {
-            console.error('No se pudo cargar la lista de productos.', error);
+            console.error('No se pudo cargar la lista de membresías.', error);
         } finally {
             setLoading(false);
         }
@@ -56,12 +56,12 @@ const MembershipScreen = () => {
 
     useEffect(() => {
         setLoading(true);
-        fetchProducts();
+        fetchMemberships();
     }, []);
 
     // ---------------------------------------------------------------------- //
 
-    const handleRefresh = () => { fetchProducts(); };
+    const handleRefresh = () => { fetchMemberships(); };
 
     if (loading) {
         return (
@@ -73,29 +73,22 @@ const MembershipScreen = () => {
 
     // ---------------------------------------------------------------------- //
 
-    const showMemberships = () => {
-        navigation.navigate('Memberships');
-    };
-
-    // ---------------------------------------------------------------------- //
-
     const insertPayment = async (id) => {
 
         try {
-            const response = await fetch(`${MainSG}Venta`, {
+            const response = await fetch(`${MainSG}UserMembership/purchase`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ clientId: user.id, sensorPackTypeId: id }),
+                body: JSON.stringify({ clientId: user.id, membershipId: id }),
             });
 
-
             if (response.ok) {
-                console.log('Compra realizada con éxito.');
-                navigation.navigate('Shopping');
+                console.log('Membresía adquirida con éxito.');
+                navigation.navigate('Memberships');
             } else {
-                console.error('Ha ocurrido un error al intentar realizar la compra.');
+                console.error('Ha ocurrido un error al intentar adquirir la membresía.');
             }
         } catch (error) {
-            console.error('No se pudo reaalizar la compra.', error);
+            console.error('No se pudo adquirir la membresía.', error);
         }
 
     };
@@ -107,7 +100,7 @@ const MembershipScreen = () => {
             openBrowserAsync(data);
             insertPayment(id);
         } else {
-            console.error('No se pudo realizar la compra del paquete.');
+            console.error('No se pudo realizar la compra de la membresía.');
         }
     };
 
@@ -116,15 +109,7 @@ const MembershipScreen = () => {
     return (
         <View style={[ styles.mainContainer, { backgroundColor: themePallete.background } ]}>
 
-            {/* Botón de acceso a la compra de membresías */}
-            <RNBounceable onPress={() => { showMemberships(); }}>
-                <View style={styles.membershipButton}>
-                    <Icon name='shield-star' size={SIZES.xxLarge} color={COLORS.light} />
-                    <Text style={styles.membershipText}>Obtener membresía</Text>
-                </View>
-            </RNBounceable>
-
-            {/* Compra de paquetes de sensores */}
+            {/* Compra de paquetes de membresías */}
             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}
                 refreshControl={
                     <RefreshControl refreshing={loading} onRefresh={handleRefresh}
@@ -132,25 +117,25 @@ const MembershipScreen = () => {
                 }>
 
                 {/* Lista de paquetes */}
-                {products.map((product) => (
-                    <RNBounceable key={product.id} onPress={() => { showPayment(product.id, product.name, product.description, product.salePrice, 'Sensor Pack'); }}>
-                        <ImageBackground style={styles.sensorPack} imageStyle={styles.sensorImage} source={SourceIMG.sensorPack}>
+                {memberships.map((membership) => (
+                    <RNBounceable key={membership.id} onPress={() => { showPayment(membership.id, membership.name, membership.description, membership.price, 'Membership'); }}>
+                        <ImageBackground style={styles.sensorPack} imageStyle={styles.sensorImage} source={SourceIMG.membershipIMG}>
                             <View style={styles.sensorContainer}>
 
                                 {/* Precio del paquete */}
-                                <Text style={[styles.sensorPrice, { color: themePallete.text }]}>Precio: ${product.salePrice}</Text>
+                                <Text style={[styles.sensorPrice, { color: themePallete.text }]}>Precio: ${membership.price}</Text>
 
                                 <LinearGradient colors={['transparent', themePallete.background]} style={styles.sensors}>
 
                                     {/* Nombre del paquete */}
                                     <Text style={[styles.sensorTitle, { color: themePallete.text }]}>
-                                        {(product.name).toUpperCase()}
+                                        {(membership.name).toUpperCase()}
                                     </Text>
 
                                     {/* Descripción del paquete */}
                                     <View style={styles.sensorIcon}>
                                         <Text style={[styles.sensorDescription, { color: themePallete.text }]}>
-                                            {product.description}
+                                            {membership.description}
                                         </Text>
                                     </View>
 
@@ -223,19 +208,21 @@ const styles = StyleSheet.create({
     sensorTitle: {
         letterSpacing: 1,
         fontWeight: 'bold',
-        paddingVertical: 6,
+        paddingVertical: 4,
+        textAlign: 'center',
         fontSize: SIZES.xLarge,
     },
 
     sensorDescription: {
-        padding: 6,
-        textAlign: 'justify',
+        padding: 4,
+        textAlign: 'center',
         fontSize: SIZES.small,
     },
 
     sensorIcon: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
     },
 
     sensorName: {
