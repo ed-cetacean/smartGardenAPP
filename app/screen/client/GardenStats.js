@@ -25,39 +25,51 @@ const GardenStatsScreen = () => {
     // ---------------------------------------------------------------------- //
 
     useEffect(() => {
-        const fetchGardenData = async () => {
-            try {
-                const response = await fetch(`${MainSG}Lectura/jardin//${gardenId}`, {
-                    method: 'GET', headers: { 'Content-Type': 'application/json' }
-                });
+        const intervalId = setInterval(() => {
+            const fetchGardenData = async () => {
+                try {
+                    const response = await fetch(`${MainSG}Lectura/jardin//${gardenId}`, {
+                        method: 'GET', headers: { 'Content-Type': 'application/json' }
+                    });
 
-                if (response.ok) {
-                    const data = await response.json();
-                    setSensorData(data);
-                } else {
+                    if (response.ok) {
+                        const data = await response.json();
+                        setSensorData(data);
+                    } else {
+                        Toast.show({
+                            type: 'error',
+                            text1: 'ERROR',
+                            text2: 'Ha ocurrido un error al intentar cargar las lecturas de los sensores.',
+                            visibilityTime: 4500,
+                        })
+
+                        // console.error('ERROR: Ha ocurrido un error al intentar cargar las lecturas de los sensores.');
+                    }
+                } catch (error) {
                     Toast.show({
                         type: 'error',
                         text1: 'ERROR',
-                        text2: 'Ha ocurrido un error al intentar cargar las lecturas de los sensores.',
+                        text2: 'No se pudieron cargar las lecturas de los sensores.',
                         visibilityTime: 4500,
                     })
 
-                    // console.error('ERROR: Ha ocurrido un error al intentar cargar las lecturas de los sensores.');
+                    // console.error('ERROR: No se pudieron cargar las lecturas de los sensores.', error);
                 }
-            } catch (error) {
-                Toast.show({
-                    type: 'error',
-                    text1: 'ERROR',
-                    text2: 'No se pudieron cargar las lecturas de los sensores.',
-                    visibilityTime: 4500,
-                })
+            };
 
-                // console.error('ERROR: No se pudieron cargar las lecturas de los sensores.', error);
-            }
+            fetchGardenData();
+
+        }, 5000);
+
+        return () => {
+          clearInterval(intervalId);
         };
+      }, []);
 
-        fetchGardenData();
-    }, []);
+
+    // useEffect(() => {
+
+    // }, []);
 
     // ---------------------------------------------------------------------- //
 
