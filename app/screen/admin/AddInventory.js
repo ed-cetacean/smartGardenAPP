@@ -10,7 +10,6 @@ import React, { useState } from 'react';
 import Toast from 'react-native-toast-message';
 import { useRoute } from '@react-navigation/native';
 import { Flow } from 'react-native-animated-spinkit';
-import InputSpinner from 'react-native-input-spinner';
 import { StyleSheet, View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
@@ -24,13 +23,11 @@ const AddInventoryScreen = () => {
     const { themePallete } = useTheme();
     const { sensorPackId, sensorPackName, sensorPackStock, sensorPackPrice } = route.params;
 
-    const [ newStockAndPrice, setNewStockAndPrice ] = useState({
-        newStock: sensorPackStock,
-        newSalePrice: sensorPackPrice.toFixed(2),
-    });
+    const [ newStockValue, setNewStockValue ] = useState(sensorPackStock);
+    const [ newPriceValue, setNewPriceValue ] = useState((sensorPackPrice).toFixed(2));
 
     const [ isLoading, setIsLoading ] = useState(false);
-    const isDisabled = newStockAndPrice.newSalePrice === '';
+    const isDisabled = newPriceValue === '';
 
     // ---------------------------------------------------------------------- //
 
@@ -44,7 +41,7 @@ const AddInventoryScreen = () => {
         try {
             const response = await fetch(`${MainSG}inventario/update/${sensorPackId}`, {
                 method: 'PUT', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newStockAndPrice)
+                body: JSON.stringify({ newStock: newStockValue, newSalePrice: newPriceValue }),
             });
 
             if (response.ok) {
@@ -92,19 +89,17 @@ const AddInventoryScreen = () => {
             </View>
 
             {/* EDICIÓN DE INFORMACIÓN */}
-            <InputSpinner min={sensorPackStock} max={sensorPackStock + 10} step={1}
-                initialValue={sensorPackStock} value={parseInt(newStockAndPrice.newStock)}
-                style={styles.inputStock} rounded={false} disabled={isLoading}
-                selectionColor={COLORS.accent} textColor={themePallete.text}
-                buttonStyle={{ borderRadius: 4 }} color={COLORS.accent}
-                onValueChange={value => setNewStockAndPrice({ ...newStockAndPrice, newStock: value.toString() })}
+            <InputCW placeholder='Stock' value={String(newStockValue)}
+                onChangeText={(value) => { const parsedValue = parseInt(value, 10);
+                    setNewStockValue(isNaN(parsedValue) ? sensorPackStock : parsedValue);
+                }} keyboardType="numeric"
             />
 
             <InputCW placeholder='Precio de venta'
-                value={newStockAndPrice.newSalePrice}
+                value={newPriceValue}
                 keyboardType='decimal-pad' maxLength={6}
                 leftIcon={<Icon name='attach-money' size={SIZES.xLarge} color={COLORS.accent} />}
-                onChangeText={value => setNewStockAndPrice({ ...newStockAndPrice, newSalePrice: value.toString() })}
+                onChangeText={value => setNewPriceValue(value.toString())}
             />
 
             {/* BOTONES */}
@@ -118,7 +113,7 @@ const AddInventoryScreen = () => {
                     )}
                 </RNBounceable>
 
-                <RNBounceable onPress={() => { handleSaveChanges(); }} disabled={isLoading || isDisabled}
+                <RNBounceable onPress={() => { handleSaveChanges(); }} disabled={isLoading || isDisabled || newStockValue < sensorPackStock || newStockValue > sensorPackStock + 10}
                     style={[ styles.saveButton, { backgroundColor: isLoading || isDisabled ? COLORS.disabled : COLORS.accent } ]} >
                     {isLoading ? (
                         <Flow size={SIZES.xLarge} color={COLORS.light} />
