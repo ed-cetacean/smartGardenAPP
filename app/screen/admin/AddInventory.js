@@ -90,8 +90,8 @@ const AddInventoryScreen = () => {
 
             {/* EDICIÓN DE INFORMACIÓN */}
             <InputCW placeholder='Stock' value={String(newStockValue)}
-                onChangeText={(value) => { const parsedValue = parseInt(value, 10);
-                    setNewStockValue(isNaN(parsedValue) ? sensorPackStock : parsedValue);
+                onChangeText={(value) => { const parsedValue = parseInt(value);
+                    setNewStockValue(isNaN(parsedValue) ? '' : parsedValue);
                 }} keyboardType="numeric"
             />
 
@@ -114,11 +114,11 @@ const AddInventoryScreen = () => {
                 </RNBounceable>
 
                 <RNBounceable onPress={() => { handleSaveChanges(); }} disabled={isLoading || isDisabled || newStockValue < sensorPackStock || newStockValue > sensorPackStock + 10}
-                    style={[ styles.saveButton, { backgroundColor: isLoading || isDisabled ? COLORS.disabled : COLORS.accent } ]} >
+                    style={[ styles.saveButton, { backgroundColor: isLoading || isDisabled || newStockValue < sensorPackStock || newStockValue > sensorPackStock + 10 ? COLORS.disabled : COLORS.accent } ]} >
                     {isLoading ? (
                         <Flow size={SIZES.xLarge} color={COLORS.light} />
                     ) : (
-                        <Text style={[styles.saveText, { color: isLoading || isDisabled ? COLORS.alterDisabled : COLORS.disabled} ]}>GUARDAR</Text>
+                        <Text style={[styles.saveText, { color: isLoading || isDisabled || newStockValue < sensorPackStock || newStockValue > sensorPackStock + 10 ? COLORS.alterDisabled : COLORS.disabled} ]}>GUARDAR</Text>
                     )}
                 </RNBounceable>
             </View>
